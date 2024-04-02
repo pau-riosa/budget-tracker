@@ -8,6 +8,17 @@ defmodule BudgetTracker.Accounts do
 
   alias BudgetTracker.Accounts.{User, UserToken, UserNotifier}
 
+  @doc """
+   Return the first character of the users's first and last name
+  """
+  @spec get_user_initials(user :: User.t()) :: String.t()
+  def get_user_initials(%User{first_name: first_name, last_name: last_name} = user)
+      when nil not in [first_name, last_name] do
+    String.first(user.first_name) <> String.first(user.last_name)
+  end
+
+  def get_user_initials(_user), do: "HP"
+
   ## Database getters
 
   @doc """
