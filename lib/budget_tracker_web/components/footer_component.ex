@@ -13,7 +13,7 @@ defmodule BudgetTrackerWeb.Components.Footer do
         <div class="xl:grid xl:grid-cols-3 xl:gap-8">
           <div class="space-y-4">
             <p class="h-8 inline-block align-bottom text-gray-400 text-md">
-              © 2023 HoopsProfile All rights reserved.
+              © 2024 Budget Tracker All rights reserved.
             </p>
           </div>
           <div class="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">

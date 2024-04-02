@@ -15,10 +15,34 @@ defmodule BudgetTrackerWeb.Components.Navigation do
             <div class="flex">
               <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
                 <.desktop_active_link
-                  path={~p"/players"}
-                  text="Budget Tracker"
+                  path={~p"/dashboard"}
+                  text="Dashboard"
                   active_page={@active_page}
-                  page={:players}
+                  page={:dashboard}
+                />
+                <.desktop_active_link
+                  path={~p"/incomes"}
+                  text="Incomes"
+                  active_page={@active_page}
+                  page={:incomes}
+                />
+                <.desktop_active_link
+                  path={~p"/expenses"}
+                  text="Expenses"
+                  active_page={@active_page}
+                  page={:expenses}
+                />
+                <.desktop_active_link
+                  path={~p"/investments"}
+                  text="Investments"
+                  active_page={@active_page}
+                  page={:investments}
+                />
+                <.desktop_active_link
+                  path={~p"/debts"}
+                  text="Debts"
+                  active_page={@active_page}
+                  page={:debts}
                 />
               </div>
             </div>

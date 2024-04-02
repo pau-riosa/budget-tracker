@@ -65,8 +65,14 @@ defmodule BudgetTrackerWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
-      on_mount: [{BudgetTrackerWeb.UserAuth, :ensure_authenticated}] do
+      on_mount: [
+        {BudgetTrackerWeb.UserAuth, :ensure_authenticated}
+      ] do
       live "/dashboard", DashboardLive, :dashboard
+      live "/incomes", IncomeLive, :incomes
+      live "/expenses", ExpenseLive, :expenses
+      live "/debts", DebtLive, :debts
+      live "/investments", InvestmentLive, :investments
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end
