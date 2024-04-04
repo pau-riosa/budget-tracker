@@ -1,6 +1,5 @@
 defmodule BudgetTracker.Accounts.UserToken do
-  use Ecto.Schema
-  import Ecto.Query
+  use BudgetTracker.Schema
   alias BudgetTracker.Accounts.UserToken
 
   @hash_algorithm :sha256
