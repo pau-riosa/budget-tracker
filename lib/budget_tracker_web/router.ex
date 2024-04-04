@@ -69,7 +69,13 @@ defmodule BudgetTrackerWeb.Router do
         {BudgetTrackerWeb.UserAuth, :ensure_authenticated}
       ] do
       live "/dashboard", DashboardLive, :dashboard
-      live "/incomes", IncomeLive, :incomes
+
+      live "/incomes", IncomeLive.Index, :index
+      live "/incomes/new", IncomeLive.Index, :new
+      live "/incomes/:id/edit", IncomeLive.Index, :edit
+      live "/incomes/:id", IncomeLive.Show, :show
+      live "/incomes/:id/show/edit", IncomeLive.Show, :edit
+
       live "/expenses", ExpenseLive, :expenses
       live "/debts", DebtLive, :debts
       live "/investments", InvestmentLive, :investments

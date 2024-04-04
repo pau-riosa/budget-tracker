@@ -1,0 +1,35 @@
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-3">
+  <.header>
+    Income <%= @income.id %>
+    <:subtitle>This is a income record from your database.</:subtitle>
+    <:actions>
+      <.link patch={~p"/incomes/#{@income}/show/edit"} phx-click={JS.push_focus()}>
+        <.button>Edit income</.button>
+      </.link>
+    </:actions>
+  </.header>
+
+  <.list>
+    <:item title="Income source"><%= @income.income_source %></:item>
+    <:item title="Amount"><%= Phoenix.HTML.Form.normalize_value(:float, @income.amount) %></:item>
+  </.list>
+
+  <.back navigate={~p"/incomes"}>Back to incomes</.back>
+
+  <.modal
+    :if={@live_action == :edit}
+    id="income-modal"
+    show
+    on_cancel={JS.patch(~p"/incomes/#{@income}")}
+  >
+    <.live_component
+      module={BudgetTrackerWeb.IncomeLive.FormComponent}
+      current_user={@current_user}
+      id={@income.id}
+      title={@page_title}
+      action={@live_action}
+      income={@income}
+      patch={~p"/incomes/#{@income}"}
+    />
+  </.modal>
+</div>

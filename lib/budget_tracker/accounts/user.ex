@@ -1,6 +1,5 @@
 defmodule BudgetTracker.Accounts.User do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use BudgetTracker.Schema
 
   schema "users" do
     field :first_name, :string
