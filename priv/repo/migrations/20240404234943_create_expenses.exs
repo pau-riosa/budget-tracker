@@ -1,16 +1,17 @@
-defmodule BudgetTracker.Repo.Migrations.CreateIncomes do
+defmodule BudgetTracker.Repo.Migrations.CreateExpenses do
   use Ecto.Migration
 
   def change do
-    create table(:incomes, primary_key: false) do
+    create table(:expenses, primary_key: false) do
       add :id, :binary_id, primary_key: true
-      add :income_source, :string
+      add :expense_source, :string
       add :amount, :float
+      add :type, :string
       add :user_id, references(:users, type: :binary_id, on_delete: :delete_all)
 
       timestamps(type: :utc_datetime)
     end
 
-    create index(:incomes, [:user_id])
+    create index(:expenses, [:user_id])
   end
 end
