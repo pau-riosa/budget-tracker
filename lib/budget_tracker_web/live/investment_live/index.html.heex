@@ -1,0 +1,51 @@
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-3">
+  <.header>
+    Listing Investments
+    <:actions>
+      <.link patch={~p"/investments/new"}>
+        <.button>New Investment</.button>
+      </.link>
+    </:actions>
+  </.header>
+
+  <.table
+    id="investments"
+    rows={@streams.investments}
+    row_click={fn {_id, investment} -> JS.navigate(~p"/investments/#{investment}") end}
+  >
+    <:col :let={{_id, investment}} label="Account type"><%= investment.account_type %></:col>
+    <:col :let={{_id, investment}} label="Amount"><%= investment.amount %></:col>
+    <:col :let={{_id, investment}} label="Type"><%= investment.type %></:col>
+    <:action :let={{_id, investment}}>
+      <div class="sr-only">
+        <.link navigate={~p"/investments/#{investment}"}>Show</.link>
+      </div>
+      <.link patch={~p"/investments/#{investment}/edit"}>Edit</.link>
+    </:action>
+    <:action :let={{id, investment}}>
+      <.link
+        phx-click={JS.push("delete", value: %{id: investment.id}) |> hide("##{id}")}
+        data-confirm="Are you sure?"
+      >
+        Delete
+      </.link>
+    </:action>
+  </.table>
+
+  <.modal
+    :if={@live_action in [:new, :edit]}
+    id="investment-modal"
+    show
+    on_cancel={JS.patch(~p"/investments")}
+  >
+    <.live_component
+      module={BudgetTrackerWeb.InvestmentLive.FormComponent}
+      current_user={@current_user}
+      id={@investment.id || :new}
+      title={@page_title}
+      action={@live_action}
+      investment={@investment}
+      patch={~p"/investments"}
+    />
+  </.modal>
+</div>
