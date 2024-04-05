@@ -156,12 +156,6 @@ defmodule BudgetTrackerWeb.Components.Navigation do
           <div class="border-t border-gray-200 pb-3 pt-4 divide-y-2 divide-gray-100 space-y-3">
             <div class="px-2 space-y-1">
               <.mobile_active_link
-                path={~p"/players"}
-                text="Find great players"
-                active_page={@active_page}
-                page={:players}
-              />
-              <.mobile_active_link
                 path={~p"/dashboard"}
                 text="Dashboard"
                 active_page={@active_page}
