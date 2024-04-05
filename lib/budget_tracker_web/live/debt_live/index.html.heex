@@ -1,0 +1,53 @@
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-3">
+  <.header>
+    Listing Debts
+    <:actions>
+      <.link patch={~p"/debts/new"}>
+        <.button>New Debt</.button>
+      </.link>
+    </:actions>
+  </.header>
+
+  <.table
+    id="debts"
+    rows={@streams.debts}
+    row_click={fn {_id, debt} -> JS.navigate(~p"/debts/#{debt}") end}
+  >
+    <:col :let={{_id, debt}} label="Debt type"><%= debt.debt_type %></:col>
+    <:col :let={{_id, debt}} label="Total amount"><%= debt.total_amount %></:col>
+    <:col :let={{_id, debt}} label="Monthly payment amount">
+      <%= debt.monthly_payment_amount %>
+    </:col>
+    <:action :let={{_id, debt}}>
+      <div class="sr-only">
+        <.link navigate={~p"/debts/#{debt}"}>Show</.link>
+      </div>
+      <.link patch={~p"/debts/#{debt}/edit"}>Edit</.link>
+    </:action>
+    <:action :let={{id, debt}}>
+      <.link
+        phx-click={JS.push("delete", value: %{id: debt.id}) |> hide("##{id}")}
+        data-confirm="Are you sure?"
+      >
+        Delete
+      </.link>
+    </:action>
+  </.table>
+
+  <.modal
+    :if={@live_action in [:new, :edit]}
+    id="debt-modal"
+    show
+    on_cancel={JS.patch(~p"/debts")}
+  >
+    <.live_component
+      module={BudgetTrackerWeb.DebtLive.FormComponent}
+      current_user={@current_user}
+      id={@debt.id || :new}
+      title={@page_title}
+      action={@live_action}
+      debt={@debt}
+      patch={~p"/debts"}
+    />
+  </.modal>
+</div>
