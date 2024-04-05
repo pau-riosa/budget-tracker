@@ -20,7 +20,8 @@ config :budget_tracker, BudgetTrackerWeb.Endpoint,
     layout: false
   ],
   pubsub_server: BudgetTracker.PubSub,
-  live_view: [signing_salt: "AlPQlexN"]
+  live_view: [signing_salt: "AlPQlexN"],
+  code_reloader: true
 
 # Configures the mailer
 #
