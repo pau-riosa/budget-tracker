@@ -94,6 +94,13 @@ defmodule BudgetTrackerWeb.Router do
       live "/debts/:id", DebtLive.Show, :show
       live "/debts/:id/show/edit", DebtLive.Show, :edit
 
+      live "/assets", AssetLive.Index, :index
+      live "/assets/new", AssetLive.Index, :new
+      live "/assets/:id/edit", AssetLive.Index, :edit
+
+      live "/assets/:id", AssetLive.Show, :show
+      live "/assets/:id/show/edit", AssetLive.Show, :edit
+
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end
