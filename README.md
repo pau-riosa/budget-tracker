@@ -10,7 +10,11 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 # Dashboard
 
-- [ ] create a side-navigation to add a monthly income
-- [ ] create a side-navigation to add a monthly expense
-- [ ] create a side-navigation to add a monthly saving & investment
-- [ ] create a side-navigation to add a monthly debt & net worth
+- [x] create a side-navigation to add a monthly income
+- [x] create a side-navigation to add a monthly expense
+- [x] create a side-navigation to add a monthly saving & investment
+- [x] create a side-navigation to add a monthly debt & net worth
+- [ ] create overall report of income
+- [ ] create overall report of expense
+- [ ] create overall report of saving and investment
+- [ ] create overall report of debt and network
