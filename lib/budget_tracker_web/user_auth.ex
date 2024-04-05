@@ -172,6 +172,24 @@ defmodule BudgetTrackerWeb.UserAuth do
     end
   end
 
+  def on_mount(:active_page, _params, _session, socket) do
+    {:cont,
+     Phoenix.LiveView.attach_hook(socket, :active_page, :handle_params, &handle_active_page/3)}
+  end
+
+  defp handle_active_page(_params, _uri, socket) do
+    active_page =
+      socket.view
+      |> Module.split()
+      |> Enum.at(1)
+      |> String.split(~r/(?=[A-Z])/, trim: true)
+      |> Enum.at(0)
+      |> String.downcase()
+      |> String.to_atom()
+
+    {:cont, Phoenix.Component.assign(socket, :active_page, active_page)}
+  end
+
   defp mount_current_user(socket, session) do
     Phoenix.Component.assign_new(socket, :current_user, fn ->
       if user_token = session["user_token"] do

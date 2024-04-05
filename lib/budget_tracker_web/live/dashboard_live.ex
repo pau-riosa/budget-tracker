@@ -1,4 +1,4 @@
-defmodule BudgetTrackerWeb.DashboardLive do
+defmodule BudgetTrackerWeb.DashboardLive.Index do
   use BudgetTrackerWeb, :live_view
 
   @impl Phoenix.LiveView
