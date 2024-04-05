@@ -1,0 +1,36 @@
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-3">
+  <.header>
+    Debt <%= @debt.id %>
+    <:subtitle>This is a debt record from your database.</:subtitle>
+    <:actions>
+      <.link patch={~p"/debts/#{@debt}/show/edit"} phx-click={JS.push_focus()}>
+        <.button>Edit debt</.button>
+      </.link>
+    </:actions>
+  </.header>
+
+  <.list>
+    <:item title="Debt type"><%= @debt.debt_type %></:item>
+    <:item title="Total amount"><%= @debt.total_amount %></:item>
+    <:item title="Monthly payment amount"><%= @debt.monthly_payment_amount %></:item>
+  </.list>
+
+  <.back navigate={~p"/debts"}>Back to debts</.back>
+
+  <.modal
+    :if={@live_action == :edit}
+    id="debt-modal"
+    show
+    on_cancel={JS.patch(~p"/debts/#{@debt}")}
+  >
+    <.live_component
+      module={BudgetTrackerWeb.DebtLive.FormComponent}
+      current_user={@current_user}
+      id={@debt.id}
+      title={@page_title}
+      action={@live_action}
+      debt={@debt}
+      patch={~p"/debts/#{@debt}"}
+    />
+  </.modal>
+</div>
