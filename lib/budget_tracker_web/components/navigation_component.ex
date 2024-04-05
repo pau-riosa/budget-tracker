@@ -13,7 +13,7 @@ defmodule BudgetTrackerWeb.Components.Navigation do
         <div class="mx-auto max-w-7xl px-3 lg:px-0 py-0 lg:py-1">
           <div class="flex h-16 justify-between">
             <div class="flex">
-              <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+              <div :if={@current_user} class="hidden sm:ml-6 sm:flex sm:space-x-8">
                 <.desktop_active_link
                   path={~p"/dashboard"}
                   text="Dashboard"
@@ -24,31 +24,31 @@ defmodule BudgetTrackerWeb.Components.Navigation do
                   path={~p"/incomes"}
                   text="Incomes"
                   active_page={@active_page}
-                  page={:incomes}
+                  page={:income}
                 />
                 <.desktop_active_link
                   path={~p"/expenses"}
                   text="Expenses"
                   active_page={@active_page}
-                  page={:expenses}
+                  page={:expense}
                 />
                 <.desktop_active_link
                   path={~p"/investments"}
                   text="Investments"
                   active_page={@active_page}
-                  page={:investments}
+                  page={:investment}
                 />
                 <.desktop_active_link
                   path={~p"/debts"}
                   text="Debts"
                   active_page={@active_page}
-                  page={:debts}
+                  page={:debt}
                 />
                 <.desktop_active_link
                   path={~p"/assets"}
                   text="Assets"
                   active_page={@active_page}
-                  page={:assets}
+                  page={:asset}
                 />
               </div>
             </div>
@@ -161,12 +161,44 @@ defmodule BudgetTrackerWeb.Components.Navigation do
         >
           <div class="border-t border-gray-200 pb-3 pt-4 divide-y-2 divide-gray-100 space-y-3">
             <div class="px-2 space-y-1">
-              <.mobile_active_link
-                path={~p"/dashboard"}
-                text="Dashboard"
-                active_page={@active_page}
-                page={:dashboard}
-              />
+              <div class="flex flex-col space-y-3">
+                <.mobile_active_link
+                  path={~p"/dashboard"}
+                  text="Dashboard"
+                  active_page={@active_page}
+                  page={:dashboard}
+                />
+                <.mobile_active_link
+                  path={~p"/incomes"}
+                  text="Incomes"
+                  active_page={@active_page}
+                  page={:income}
+                />
+                <.mobile_active_link
+                  path={~p"/expenses"}
+                  text="Expenses"
+                  active_page={@active_page}
+                  page={:expense}
+                />
+                <.mobile_active_link
+                  path={~p"/investments"}
+                  text="Investments"
+                  active_page={@active_page}
+                  page={:investment}
+                />
+                <.mobile_active_link
+                  path={~p"/debts"}
+                  text="Debts"
+                  active_page={@active_page}
+                  page={:debt}
+                />
+                <.mobile_active_link
+                  path={~p"/assets"}
+                  text="Assets"
+                  active_page={@active_page}
+                  page={:asset}
+                />
+              </div>
             </div>
             <ul :if={@current_user} class="mx-auto space-y-1 px-3">
               <li class="text-[0.8125rem] leading-6 text-zinc-900">
