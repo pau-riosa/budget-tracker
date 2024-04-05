@@ -7,10 +7,15 @@ defmodule BudgetTracker.ExpensesFixtures do
   @doc """
   Generate a expense.
   """
+  import BudgetTracker.AccountsFixtures
+
   def expense_fixture(attrs \\ %{}) do
+    user = user_fixture()
+
     {:ok, expense} =
       attrs
       |> Enum.into(%{
+        user_id: user.id,
         amount: 120.5,
         expense_source: "some expense_source",
         type: :variable

@@ -5,7 +5,7 @@ defmodule BudgetTracker.ExpensesTest do
 
   describe "expenses" do
     alias BudgetTracker.Expenses.Expense
-
+    import BudgetTracker.AccountsFixtures
     import BudgetTracker.ExpensesFixtures
 
     @invalid_attrs %{type: nil, expense_source: nil, amount: nil}
@@ -21,7 +21,14 @@ defmodule BudgetTracker.ExpensesTest do
     end
 
     test "create_expense/1 with valid data creates a expense" do
-      valid_attrs = %{type: :variable, expense_source: "some expense_source", amount: 120.5}
+      user = user_fixture()
+
+      valid_attrs = %{
+        type: :variable,
+        expense_source: "some expense_source",
+        amount: 120.5,
+        user_id: user.id
+      }
 
       assert {:ok, %Expense{} = expense} = Expenses.create_expense(valid_attrs)
       assert expense.type == :variable
