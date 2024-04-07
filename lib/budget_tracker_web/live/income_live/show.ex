@@ -1,7 +1,7 @@
 defmodule BudgetTrackerWeb.IncomeLive.Show do
   use BudgetTrackerWeb, :live_view
 
-  alias BudgetTracker.Transactions
+  alias BudgetTracker.Incomes
 
   @impl true
   def mount(_params, _session, socket) do
@@ -13,7 +13,7 @@ defmodule BudgetTrackerWeb.IncomeLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:income, Transactions.get_income!(id))}
+     |> assign(:income, Incomes.get_income!(id))}
   end
 
   defp page_title(:show), do: "Show Income"

@@ -1,7 +1,7 @@
 defmodule BudgetTrackerWeb.IncomeLive.FormComponent do
   use BudgetTrackerWeb, :live_component
 
-  alias BudgetTracker.Transactions
+  alias BudgetTracker.Incomes
 
   @impl true
   def render(assigns) do
@@ -32,7 +32,7 @@ defmodule BudgetTrackerWeb.IncomeLive.FormComponent do
 
   @impl true
   def update(%{income: income} = assigns, socket) do
-    changeset = Transactions.change_income(income)
+    changeset = Incomes.change_income(income)
 
     {:ok,
      socket
@@ -44,7 +44,7 @@ defmodule BudgetTrackerWeb.IncomeLive.FormComponent do
   def handle_event("validate", %{"income" => income_params}, socket) do
     changeset =
       socket.assigns.income
-      |> Transactions.change_income(income_params)
+      |> Incomes.change_income(income_params)
       |> Map.put(:action, :validate)
 
     {:noreply, assign_form(socket, changeset)}
@@ -55,7 +55,7 @@ defmodule BudgetTrackerWeb.IncomeLive.FormComponent do
   end
 
   defp save_income(socket, :edit, income_params) do
-    case Transactions.update_income(socket.assigns.income, income_params) do
+    case Incomes.update_income(socket.assigns.income, income_params) do
       {:ok, income} ->
         notify_parent({:saved, income})
 
@@ -70,7 +70,7 @@ defmodule BudgetTrackerWeb.IncomeLive.FormComponent do
   end
 
   defp save_income(socket, :new, income_params) do
-    case Transactions.create_income(income_params) do
+    case Incomes.create_income(income_params) do
       {:ok, income} ->
         notify_parent({:saved, income})
 

@@ -1,12 +1,12 @@
 defmodule BudgetTrackerWeb.IncomeLive.Index do
   use BudgetTrackerWeb, :live_view
 
-  alias BudgetTracker.Transactions
-  alias BudgetTracker.Transactions.Income
+  alias BudgetTracker.Incomes
+  alias BudgetTracker.Incomes.Income
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :incomes, Transactions.list_incomes())}
+    {:ok, stream(socket, :incomes, Incomes.list_incomes())}
   end
 
   @impl true
@@ -17,7 +17,7 @@ defmodule BudgetTrackerWeb.IncomeLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Income")
-    |> assign(:income, Transactions.get_income!(id))
+    |> assign(:income, Incomes.get_income!(id))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -39,8 +39,8 @@ defmodule BudgetTrackerWeb.IncomeLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    income = Transactions.get_income!(id)
-    {:ok, _} = Transactions.delete_income(income)
+    income = Incomes.get_income!(id)
+    {:ok, _} = Incomes.delete_income(income)
 
     {:noreply, stream_delete(socket, :incomes, income)}
   end

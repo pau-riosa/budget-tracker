@@ -1,4 +1,4 @@
-defmodule BudgetTracker.Transactions.Income do
+defmodule BudgetTracker.Incomes.Income do
   use BudgetTracker.Schema
 
   schema "incomes" do

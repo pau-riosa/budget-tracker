@@ -1,12 +1,12 @@
-defmodule BudgetTracker.Transactions do
+defmodule BudgetTracker.Incomes do
   @moduledoc """
-  The Transactions context.
+  The Incomes context.
   """
 
   import Ecto.Query, warn: false
   alias BudgetTracker.Repo
 
-  alias BudgetTracker.Transactions.Income
+  alias BudgetTracker.Incomes.Income
 
   @doc """
   Returns the list of incomes.
