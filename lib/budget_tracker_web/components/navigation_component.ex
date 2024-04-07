@@ -50,6 +50,12 @@ defmodule BudgetTrackerWeb.Components.Navigation do
                   active_page={@active_page}
                   page={:asset}
                 />
+                <.desktop_active_link
+                  path={~p"/transactions"}
+                  text="Transactions"
+                  active_page={@active_page}
+                  page={:transaction}
+                />
               </div>
             </div>
             <!-- desktop user menu / register and login -->

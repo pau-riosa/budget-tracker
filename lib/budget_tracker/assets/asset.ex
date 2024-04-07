@@ -6,7 +6,7 @@ defmodule BudgetTracker.Assets.Asset do
     field :asset_name, :string
     belongs_to :user, BudgetTracker.Accounts.User
 
-    timestamps(type: :utc_datetime)
+    timestamps()
   end
 
   @doc false

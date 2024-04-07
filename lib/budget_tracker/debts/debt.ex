@@ -7,7 +7,7 @@ defmodule BudgetTracker.Debts.Debt do
     field :monthly_payment_amount, :float
     belongs_to :user, BudgetTracker.Accounts.User
 
-    timestamps(type: :utc_datetime)
+    timestamps()
   end
 
   @doc false

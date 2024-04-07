@@ -6,7 +6,7 @@ defmodule BudgetTracker.Incomes.Income do
     field :amount, :float
     belongs_to :user, BudgetTracker.Accounts.User
 
-    timestamps(type: :utc_datetime)
+    timestamps()
   end
 
   @doc false

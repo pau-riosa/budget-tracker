@@ -7,7 +7,7 @@ defmodule BudgetTracker.Investments.Investment do
     field :amount, :float
     belongs_to :user, BudgetTracker.Accounts.User
 
-    timestamps(type: :utc_datetime)
+    timestamps()
   end
 
   @doc false

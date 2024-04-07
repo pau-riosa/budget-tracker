@@ -23,4 +23,22 @@ defmodule BudgetTracker.IncomesFixtures do
 
     income
   end
+
+  @doc """
+  Generate a transaction.
+  """
+  def transaction_fixture(attrs \\ %{}) do
+    {:ok, transaction} =
+      attrs
+      |> Enum.into(%{
+        amount: 120.5,
+        category: :incomes,
+        date: ~U[2024-04-06 13:45:00.000000Z],
+        description: "some description",
+        money_in_or_out: true
+      })
+      |> BudgetTracker.Transactions.create_transaction()
+
+    transaction
+  end
 end

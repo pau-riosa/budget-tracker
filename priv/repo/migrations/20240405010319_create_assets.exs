@@ -8,7 +8,7 @@ defmodule BudgetTracker.Repo.Migrations.CreateAssets do
       add :asset_name, :string
       add :user_id, references(:users, type: :binary_id, on_delete: :nothing)
 
-      timestamps(type: :utc_datetime)
+      timestamps(type: :utc_datetime_usec)
     end
 
     create index(:assets, [:user_id])

@@ -9,7 +9,7 @@ defmodule BudgetTracker.Repo.Migrations.CreateDebts do
       add :monthly_payment_amount, :float
       add :user_id, references(:users, type: :binary_id, on_delete: :delete_all)
 
-      timestamps(type: :utc_datetime)
+      timestamps(type: :utc_datetime_usec)
     end
 
     create index(:debts, [:user_id])

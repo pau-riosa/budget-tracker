@@ -9,7 +9,7 @@ defmodule BudgetTracker.Repo.Migrations.CreateExpenses do
       add :type, :string
       add :user_id, references(:users, type: :binary_id, on_delete: :delete_all)
 
-      timestamps(type: :utc_datetime)
+      timestamps(type: :utc_datetime_usec)
     end
 
     create index(:expenses, [:user_id])
