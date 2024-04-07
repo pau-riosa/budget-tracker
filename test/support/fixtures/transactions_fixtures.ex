@@ -1,7 +1,7 @@
-defmodule BudgetTracker.TransactionsFixtures do
+defmodule BudgetTracker.IncomesFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `BudgetTracker.Transactions` context.
+  entities via the `BudgetTracker.Incomes` context.
   """
 
   @doc """
@@ -19,7 +19,7 @@ defmodule BudgetTracker.TransactionsFixtures do
         amount: 120.5,
         income_source: "some income_source"
       })
-      |> BudgetTracker.Transactions.create_income()
+      |> BudgetTracker.Incomes.create_income()
 
     income
   end

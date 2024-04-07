@@ -3,7 +3,7 @@ defmodule BudgetTrackerWeb.IncomeLiveTest do
 
   import Phoenix.LiveViewTest
   import BudgetTracker.AccountsFixtures
-  import BudgetTracker.TransactionsFixtures
+  import BudgetTracker.IncomesFixtures
 
   @create_attrs %{income_source: "some income_source", amount: 120.5}
   @update_attrs %{income_source: "some updated income_source", amount: 456.7}
