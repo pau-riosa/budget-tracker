@@ -12,7 +12,7 @@ defmodule BudgetTracker.BudgetSettings.BudgetSetting do
   @doc false
   def changeset(budget_setting, attrs) do
     budget_setting
-    |> cast(attrs, [:category, :name, :planned_amount])
-    |> validate_required([:category, :name, :planned_amount])
+    |> cast(attrs, [:category, :name, :planned_amount, :user_id])
+    |> validate_required([:category, :name, :planned_amount, :user_id])
   end
 end
