@@ -2,6 +2,7 @@ defmodule BudgetTrackerWeb.BudgetSettingLiveTest do
   use BudgetTrackerWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
+  import BudgetTracker.AccountsFixtures
   import BudgetTracker.BudgetSettingsFixtures
 
   @create_attrs %{name: "some name", category: :incomes, planned_amount: 120.5}
@@ -11,7 +12,8 @@ defmodule BudgetTrackerWeb.BudgetSettingLiveTest do
   setup [:register_and_log_in_user]
 
   defp create_budget_setting(_) do
-    budget_setting = budget_setting_fixture()
+    user = user_fixture()
+    budget_setting = budget_setting_fixture(%{user_id: user.id})
     %{budget_setting: budget_setting}
   end
 

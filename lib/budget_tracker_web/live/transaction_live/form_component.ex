@@ -19,9 +19,17 @@ defmodule BudgetTrackerWeb.TransactionLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
+        <.input
+          field={@form[:budget_setting_id]}
+          type="select"
+          label="Category"
+          prompt="Choose a category"
+          options={@budget_setting_options}
+        />
         <.input field={@form[:date]} type="datetime-local" label="Date" />
-        <.input field={@form[:amount]} type="number" label="Amount" />
         <.input field={@form[:description]} type="text" label="Description" />
+        <.input field={@form[:amount]} type="number" label="Amount" />
+        <.input field={@form[:user_id]} type="hidden" value={@current_user.id} />
         <:actions>
           <.button phx-disable-with="Saving...">Save Transaction</.button>
         </:actions>
@@ -36,7 +44,9 @@ defmodule BudgetTrackerWeb.TransactionLive.FormComponent do
 
     {:ok,
      socket
+     |> assign(budget_setting_options: [])
      |> assign(assigns)
+     |> assign_budget_setting_options()
      |> assign_form(changeset)}
   end
 
@@ -86,6 +96,15 @@ defmodule BudgetTrackerWeb.TransactionLive.FormComponent do
 
   defp assign_form(socket, %Ecto.Changeset{} = changeset) do
     assign(socket, :form, to_form(changeset))
+  end
+
+  defp assign_budget_setting_options(socket) do
+    budget_setting_options =
+      socket.assigns.current_user
+      |> BudgetTracker.BudgetSettings.list_budget_settings_of_user()
+      |> Enum.map(&{&1.name, &1.id})
+
+    assign(socket, :budget_setting_options, budget_setting_options)
   end
 
   defp notify_parent(msg), do: send(self(), {__MODULE__, msg})

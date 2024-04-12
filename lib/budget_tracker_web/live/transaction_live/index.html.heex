@@ -1,3 +1,4 @@
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-3">
 <.header>
   Listing Transactions
   <:actions>
@@ -38,6 +39,8 @@
     title={@page_title}
     action={@live_action}
     transaction={@transaction}
+                                            current_user={@current_user}
     patch={~p"/transactions"}
   />
 </.modal>
+</div>

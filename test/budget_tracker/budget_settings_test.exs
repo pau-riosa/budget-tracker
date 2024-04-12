@@ -12,12 +12,14 @@ defmodule BudgetTracker.BudgetSettingsTest do
     @invalid_attrs %{name: nil, category: nil, planned_amount: nil}
 
     test "list_budget_settings/0 returns all budget_settings" do
-      budget_setting = budget_setting_fixture()
+      user = user_fixture()
+      budget_setting = budget_setting_fixture(%{user_id: user.id})
       assert BudgetSettings.list_budget_settings() == [budget_setting]
     end
 
     test "get_budget_setting!/1 returns the budget_setting with given id" do
-      budget_setting = budget_setting_fixture()
+      user = user_fixture()
+      budget_setting = budget_setting_fixture(%{user_id: user.id})
       assert BudgetSettings.get_budget_setting!(budget_setting.id) == budget_setting
     end
 
@@ -44,7 +46,8 @@ defmodule BudgetTracker.BudgetSettingsTest do
     end
 
     test "update_budget_setting/2 with valid data updates the budget_setting" do
-      budget_setting = budget_setting_fixture()
+      user = user_fixture()
+      budget_setting = budget_setting_fixture(%{user_id: user.id})
 
       update_attrs = %{
         name: "some updated name",
@@ -61,7 +64,8 @@ defmodule BudgetTracker.BudgetSettingsTest do
     end
 
     test "update_budget_setting/2 with invalid data returns error changeset" do
-      budget_setting = budget_setting_fixture()
+      user = user_fixture()
+      budget_setting = budget_setting_fixture(%{user_id: user.id})
 
       assert {:error, %Ecto.Changeset{}} =
                BudgetSettings.update_budget_setting(budget_setting, @invalid_attrs)
@@ -70,7 +74,8 @@ defmodule BudgetTracker.BudgetSettingsTest do
     end
 
     test "delete_budget_setting/1 deletes the budget_setting" do
-      budget_setting = budget_setting_fixture()
+      user = user_fixture()
+      budget_setting = budget_setting_fixture(%{user_id: user.id})
       assert {:ok, %BudgetSetting{}} = BudgetSettings.delete_budget_setting(budget_setting)
 
       assert_raise Ecto.NoResultsError, fn ->
@@ -79,7 +84,8 @@ defmodule BudgetTracker.BudgetSettingsTest do
     end
 
     test "change_budget_setting/1 returns a budget_setting changeset" do
-      budget_setting = budget_setting_fixture()
+      user = user_fixture()
+      budget_setting = budget_setting_fixture(%{user_id: user.id})
       assert %Ecto.Changeset{} = BudgetSettings.change_budget_setting(budget_setting)
     end
   end

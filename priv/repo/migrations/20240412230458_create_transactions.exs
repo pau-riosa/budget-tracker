@@ -7,13 +7,17 @@ defmodule BudgetTracker.Repo.Migrations.CreateTransactions do
       add :date, :utc_datetime
       add :amount, :integer
       add :description, :text
-      add :category_id, references(:budget_settings, on_delete: :nothing, type: :binary_id)
-      add :user_id, references(:users, on_delete: :nothing, type: :binary_id)
+
+      add :budget_setting_id,
+          references(:budget_settings, on_delete: :delete_all, type: :binary_id)
+
+      add :user_id, references(:users, on_delete: :delete_all, type: :binary_id)
 
       timestamps(type: :utc_datetime)
     end
 
-    create index(:transactions, [:category_id])
+    create index(:transactions, [:budget_setting_id])
     create index(:transactions, [:user_id])
+    create index(:transactions, [:date])
   end
 end

@@ -7,6 +7,9 @@ defmodule BudgetTracker.TransactionsFixtures do
   @doc """
   Generate a transaction.
   """
+  import BudgetTracker.AccountsFixtures
+  import BudgetTracker.BudgetSettingsFixtures
+
   def transaction_fixture(attrs \\ %{}) do
     {:ok, transaction} =
       attrs

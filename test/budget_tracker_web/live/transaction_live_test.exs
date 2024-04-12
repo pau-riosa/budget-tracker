@@ -2,14 +2,24 @@ defmodule BudgetTrackerWeb.TransactionLiveTest do
   use BudgetTrackerWeb.ConnCase
 
   import Phoenix.LiveViewTest
+  import BudgetTracker.AccountsFixtures
+  import BudgetTracker.BudgetSettingsFixtures
   import BudgetTracker.TransactionsFixtures
 
   @create_attrs %{date: "2024-04-11T23:04:00Z", description: "some description", amount: 42}
-  @update_attrs %{date: "2024-04-12T23:04:00Z", description: "some updated description", amount: 43}
+  @update_attrs %{
+    date: "2024-04-12T23:04:00Z",
+    description: "some updated description",
+    amount: 43
+  }
   @invalid_attrs %{date: nil, description: nil, amount: nil}
 
+  setup [:register_and_log_in_user]
+
   defp create_transaction(_) do
-    transaction = transaction_fixture()
+    user = user_fixture()
+    budget_setting = budget_setting_fixture(%{user_id: user.id})
+    transaction = transaction_fixture(%{user_id: user.id, budget_setting_id: budget_setting.id})
     %{transaction: transaction}
   end
 
@@ -23,7 +33,8 @@ defmodule BudgetTrackerWeb.TransactionLiveTest do
       assert html =~ transaction.description
     end
 
-    test "saves new transaction", %{conn: conn} do
+    test "saves new transaction", %{conn: conn, user: user} do
+      budget_setting = budget_setting_fixture(%{user_id: user.id})
       {:ok, index_live, _html} = live(conn, ~p"/transactions")
 
       assert index_live |> element("a", "New Transaction") |> render_click() =~
@@ -35,8 +46,13 @@ defmodule BudgetTrackerWeb.TransactionLiveTest do
              |> form("#transaction-form", transaction: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
+      attrs =
+        @create_attrs
+        |> Map.put(:user_id, user.id)
+        |> Map.put(:budget_setting_id, budget_setting.id)
+
       assert index_live
-             |> form("#transaction-form", transaction: @create_attrs)
+             |> form("#transaction-form", transaction: attrs)
              |> render_submit()
 
       assert_patch(index_live, ~p"/transactions")
@@ -46,7 +62,8 @@ defmodule BudgetTrackerWeb.TransactionLiveTest do
       assert html =~ "some description"
     end
 
-    test "updates transaction in listing", %{conn: conn, transaction: transaction} do
+    test "updates transaction in listing", %{conn: conn, transaction: transaction, user: user} do
+      budget_setting = budget_setting_fixture(%{user_id: user.id})
       {:ok, index_live, _html} = live(conn, ~p"/transactions")
 
       assert index_live |> element("#transactions-#{transaction.id} a", "Edit") |> render_click() =~
@@ -58,8 +75,13 @@ defmodule BudgetTrackerWeb.TransactionLiveTest do
              |> form("#transaction-form", transaction: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
+      attrs =
+        @update_attrs
+        |> Map.put(:user_id, user.id)
+        |> Map.put(:budget_setting_id, budget_setting.id)
+
       assert index_live
-             |> form("#transaction-form", transaction: @update_attrs)
+             |> form("#transaction-form", transaction: attrs)
              |> render_submit()
 
       assert_patch(index_live, ~p"/transactions")
@@ -72,7 +94,10 @@ defmodule BudgetTrackerWeb.TransactionLiveTest do
     test "deletes transaction in listing", %{conn: conn, transaction: transaction} do
       {:ok, index_live, _html} = live(conn, ~p"/transactions")
 
-      assert index_live |> element("#transactions-#{transaction.id} a", "Delete") |> render_click()
+      assert index_live
+             |> element("#transactions-#{transaction.id} a", "Delete")
+             |> render_click()
+
       refute has_element?(index_live, "#transactions-#{transaction.id}")
     end
   end
@@ -87,7 +112,8 @@ defmodule BudgetTrackerWeb.TransactionLiveTest do
       assert html =~ transaction.description
     end
 
-    test "updates transaction within modal", %{conn: conn, transaction: transaction} do
+    test "updates transaction within modal", %{conn: conn, transaction: transaction, user: user} do
+      budget_setting = budget_setting_fixture(%{user_id: user.id})
       {:ok, show_live, _html} = live(conn, ~p"/transactions/#{transaction}")
 
       assert show_live |> element("a", "Edit") |> render_click() =~
@@ -99,8 +125,13 @@ defmodule BudgetTrackerWeb.TransactionLiveTest do
              |> form("#transaction-form", transaction: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
+      attrs =
+        @update_attrs
+        |> Map.put(:user_id, user.id)
+        |> Map.put(:budget_setting_id, budget_setting.id)
+
       assert show_live
-             |> form("#transaction-form", transaction: @update_attrs)
+             |> form("#transaction-form", transaction: attrs)
              |> render_submit()
 
       assert_patch(show_live, ~p"/transactions/#{transaction}")
