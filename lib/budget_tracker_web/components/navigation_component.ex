@@ -24,7 +24,7 @@ defmodule BudgetTrackerWeb.Components.Navigation do
                   path={~p"/budget_settings"}
                   text="Budget Settings"
                   active_page={@active_page}
-                  page={:budget_setting}
+                  page={:budget}
                 />
               </div>
             </div>
