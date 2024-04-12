@@ -73,38 +73,6 @@ defmodule BudgetTrackerWeb.Router do
         {BudgetTrackerWeb.UserAuth, :active_page}
       ] do
       live "/dashboard", DashboardLive.Index, :index
-
-      live "/incomes", IncomeLive.Index, :index
-      live "/incomes/new", IncomeLive.Index, :new
-      live "/incomes/:id/edit", IncomeLive.Index, :edit
-      live "/incomes/:id", IncomeLive.Show, :show
-      live "/incomes/:id/show/edit", IncomeLive.Show, :edit
-
-      live "/expenses", ExpenseLive.Index, :index
-      live "/expenses/new", ExpenseLive.Index, :new
-      live "/expenses/:id/edit", ExpenseLive.Index, :edit
-      live "/expenses/:id", ExpenseLive.Show, :show
-      live "/expenses/:id/show/edit", ExpenseLive.Show, :edit
-
-      live "/investments", InvestmentLive.Index, :index
-      live "/investments/new", InvestmentLive.Index, :new
-      live "/investments/:id/edit", InvestmentLive.Index, :edit
-      live "/investments/:id", InvestmentLive.Show, :show
-      live "/investments/:id/show/edit", InvestmentLive.Show, :edit
-
-      live "/debts", DebtLive.Index, :index
-      live "/debts/new", DebtLive.Index, :new
-      live "/debts/:id/edit", DebtLive.Index, :edit
-      live "/debts/:id", DebtLive.Show, :show
-      live "/debts/:id/show/edit", DebtLive.Show, :edit
-
-      live "/assets", AssetLive.Index, :index
-      live "/assets/new", AssetLive.Index, :new
-      live "/assets/:id/edit", AssetLive.Index, :edit
-
-      live "/assets/:id", AssetLive.Show, :show
-      live "/assets/:id/show/edit", AssetLive.Show, :edit
-
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end
