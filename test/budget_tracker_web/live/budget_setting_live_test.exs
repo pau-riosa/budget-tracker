@@ -25,7 +25,7 @@ defmodule BudgetTrackerWeb.BudgetSettingLiveTest do
       assert html =~ budget_setting.name
     end
 
-    test "saves new budget_setting", %{conn: conn} do
+    test "saves new budget_setting", %{conn: conn, user: user} do
       {:ok, index_live, _html} = live(conn, ~p"/budget_settings")
 
       assert index_live |> element("a", "New Budget setting") |> render_click() =~
@@ -39,7 +39,7 @@ defmodule BudgetTrackerWeb.BudgetSettingLiveTest do
 
       assert index_live
              |> form("#budget_setting-form", budget_setting: @create_attrs)
-             |> render_submit()
+             |> render_submit(%{user_id: user.id})
 
       assert_patch(index_live, ~p"/budget_settings")
 

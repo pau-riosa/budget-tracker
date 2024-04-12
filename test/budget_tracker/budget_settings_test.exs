@@ -6,6 +6,7 @@ defmodule BudgetTracker.BudgetSettingsTest do
   describe "budget_settings" do
     alias BudgetTracker.BudgetSettings.BudgetSetting
 
+    import BudgetTracker.AccountsFixtures
     import BudgetTracker.BudgetSettingsFixtures
 
     @invalid_attrs %{name: nil, category: nil, planned_amount: nil}
@@ -21,7 +22,14 @@ defmodule BudgetTracker.BudgetSettingsTest do
     end
 
     test "create_budget_setting/1 with valid data creates a budget_setting" do
-      valid_attrs = %{name: "some name", category: :incomes, planned_amount: Money.new(120)}
+      user = user_fixture()
+
+      valid_attrs = %{
+        name: "some name",
+        category: :incomes,
+        planned_amount: Money.new(120),
+        user_id: user.id
+      }
 
       assert {:ok, %BudgetSetting{} = budget_setting} =
                BudgetSettings.create_budget_setting(valid_attrs)
