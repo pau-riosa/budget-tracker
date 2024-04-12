@@ -10,15 +10,12 @@ defmodule BudgetTracker.BudgetSettingsFixtures do
   import BudgetTracker.AccountsFixtures
 
   def budget_setting_fixture(attrs \\ %{}) do
-    user = user_fixture()
-
     {:ok, budget_setting} =
       attrs
       |> Enum.into(%{
         category: :incomes,
         name: "some name",
-        planned_amount: Money.new(120),
-        user_id: user.id
+        planned_amount: Money.new(120)
       })
       |> BudgetTracker.BudgetSettings.create_budget_setting()
 

@@ -1,0 +1,32 @@
+
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-3">
+<.header>
+  Transaction <%= @transaction.id %>
+  <:subtitle>This is a transaction record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/transactions/#{@transaction}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit transaction</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Date"><%= @transaction.date %></:item>
+  <:item title="Amount"><%= @transaction.amount %></:item>
+  <:item title="Description"><%= @transaction.description %></:item>
+</.list>
+
+<.back navigate={~p"/transactions"}>Back to transactions</.back>
+
+<.modal :if={@live_action == :edit} id="transaction-modal" show on_cancel={JS.patch(~p"/transactions/#{@transaction}")}>
+  <.live_component
+    module={BudgetTrackerWeb.TransactionLive.FormComponent}
+    id={@transaction.id}
+    title={@page_title}
+    action={@live_action}
+    transaction={@transaction}
+                                    current_user={@current_user}
+    patch={~p"/transactions/#{@transaction}"}
+  />
+</.modal>
+</div>

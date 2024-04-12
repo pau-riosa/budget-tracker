@@ -8,6 +8,10 @@ defmodule BudgetTracker.BudgetSettings do
 
   alias BudgetTracker.BudgetSettings.BudgetSetting
 
+  def list_budget_settings_of_user(user) do
+    Repo.all(from(b in BudgetSetting, where: b.user_id == ^user.id))
+  end
+
   @doc """
   Returns the list of budget_settings.
 
