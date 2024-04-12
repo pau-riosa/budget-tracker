@@ -1,0 +1,54 @@
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-3">
+  <.header>
+    Listing Budget settings
+    <:actions>
+      <.link patch={~p"/budget_settings/new"}>
+        <.button>New Budget setting</.button>
+      </.link>
+    </:actions>
+  </.header>
+
+  <.table
+    id="budget_settings"
+    rows={@streams.budget_settings}
+    row_click={
+      fn {_id, budget_setting} -> JS.navigate(~p"/budget_settings/#{budget_setting}") end
+    }
+  >
+    <:col :let={{_id, budget_setting}} label="Name"><%= budget_setting.name %></:col>
+    <:col :let={{_id, budget_setting}} label="Category"><%= budget_setting.category %></:col>
+    <:col :let={{_id, budget_setting}} label="Planned amount">
+      <%= budget_setting.planned_amount %>
+    </:col>
+    <:action :let={{_id, budget_setting}}>
+      <div class="sr-only">
+        <.link navigate={~p"/budget_settings/#{budget_setting}"}>Show</.link>
+      </div>
+      <.link patch={~p"/budget_settings/#{budget_setting}/edit"}>Edit</.link>
+    </:action>
+    <:action :let={{id, budget_setting}}>
+      <.link
+        phx-click={JS.push("delete", value: %{id: budget_setting.id}) |> hide("##{id}")}
+        data-confirm="Are you sure?"
+      >
+        Delete
+      </.link>
+    </:action>
+  </.table>
+
+  <.modal
+    :if={@live_action in [:new, :edit]}
+    id="budget_setting-modal"
+    show
+    on_cancel={JS.patch(~p"/budget_settings")}
+  >
+    <.live_component
+      module={BudgetTrackerWeb.BudgetSettingLive.FormComponent}
+      id={@budget_setting.id || :new}
+      title={@page_title}
+      action={@live_action}
+      budget_setting={@budget_setting}
+      patch={~p"/budget_settings"}
+    />
+  </.modal>
+</div>

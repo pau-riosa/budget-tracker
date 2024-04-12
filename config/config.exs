@@ -7,6 +7,19 @@
 # General application configuration
 import Config
 
+config :money,
+  default_currency: :PHP,
+  separator: ",",
+  delimiter: ".",
+  symbol: true,
+  symbol_on_right: false,
+  symbol_space: true,
+  fractional_unit: true,
+  strip_insignificant_zeros: true,
+  code: false,
+  minus_sign_first: true,
+  strip_insignificant_fractional_unit: false
+
 config :budget_tracker,
   ecto_repos: [BudgetTracker.Repo],
   generators: [timestamp_type: :utc_datetime]

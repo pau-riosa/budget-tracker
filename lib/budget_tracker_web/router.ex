@@ -73,6 +73,13 @@ defmodule BudgetTrackerWeb.Router do
         {BudgetTrackerWeb.UserAuth, :active_page}
       ] do
       live "/dashboard", DashboardLive.Index, :index
+      live "/budget_settings", BudgetSettingLive.Index, :index
+      live "/budget_settings/new", BudgetSettingLive.Index, :new
+      live "/budget_settings/:id/edit", BudgetSettingLive.Index, :edit
+
+      live "/budget_settings/:id", BudgetSettingLive.Show, :show
+      live "/budget_settings/:id/show/edit", BudgetSettingLive.Show, :edit
+
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end
