@@ -21,34 +21,10 @@ defmodule BudgetTrackerWeb.Components.Navigation do
                   page={:dashboard}
                 />
                 <.desktop_active_link
-                  path={~p"/incomes"}
-                  text="Incomes"
+                  path={~p"/budget_settings"}
+                  text="Budget Settings"
                   active_page={@active_page}
-                  page={:income}
-                />
-                <.desktop_active_link
-                  path={~p"/expenses"}
-                  text="Expenses"
-                  active_page={@active_page}
-                  page={:expense}
-                />
-                <.desktop_active_link
-                  path={~p"/investments"}
-                  text="Investments"
-                  active_page={@active_page}
-                  page={:investment}
-                />
-                <.desktop_active_link
-                  path={~p"/debts"}
-                  text="Debts"
-                  active_page={@active_page}
-                  page={:debt}
-                />
-                <.desktop_active_link
-                  path={~p"/assets"}
-                  text="Assets"
-                  active_page={@active_page}
-                  page={:asset}
+                  page={:budget_setting}
                 />
               </div>
             </div>
@@ -169,34 +145,10 @@ defmodule BudgetTrackerWeb.Components.Navigation do
                   page={:dashboard}
                 />
                 <.mobile_active_link
-                  path={~p"/incomes"}
-                  text="Incomes"
+                  path={~p"/budget_settings"}
+                  text="Budget Settings"
                   active_page={@active_page}
-                  page={:income}
-                />
-                <.mobile_active_link
-                  path={~p"/expenses"}
-                  text="Expenses"
-                  active_page={@active_page}
-                  page={:expense}
-                />
-                <.mobile_active_link
-                  path={~p"/investments"}
-                  text="Investments"
-                  active_page={@active_page}
-                  page={:investment}
-                />
-                <.mobile_active_link
-                  path={~p"/debts"}
-                  text="Debts"
-                  active_page={@active_page}
-                  page={:debt}
-                />
-                <.mobile_active_link
-                  path={~p"/assets"}
-                  text="Assets"
-                  active_page={@active_page}
-                  page={:asset}
+                  page={:budget_setting}
                 />
               </div>
             </div>

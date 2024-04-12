@@ -1,0 +1,35 @@
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-3">
+  <.header>
+    Budget setting <%= @budget_setting.id %>
+    <:subtitle>This is a budget_setting record from your database.</:subtitle>
+    <:actions>
+      <.link patch={~p"/budget_settings/#{@budget_setting}/show/edit"} phx-click={JS.push_focus()}>
+        <.button>Edit budget_setting</.button>
+      </.link>
+    </:actions>
+  </.header>
+
+  <.list>
+    <:item title="Category"><%= @budget_setting.category %></:item>
+    <:item title="Name"><%= @budget_setting.name %></:item>
+    <:item title="Planned amount"><%= @budget_setting.planned_amount %></:item>
+  </.list>
+
+  <.back navigate={~p"/budget_settings"}>Back to budget_settings</.back>
+
+  <.modal
+    :if={@live_action == :edit}
+    id="budget_setting-modal"
+    show
+    on_cancel={JS.patch(~p"/budget_settings/#{@budget_setting}")}
+  >
+    <.live_component
+      module={BudgetTrackerWeb.BudgetSettingLive.FormComponent}
+      id={@budget_setting.id}
+      title={@page_title}
+      action={@live_action}
+      budget_setting={@budget_setting}
+      patch={~p"/budget_settings/#{@budget_setting}"}
+    />
+  </.modal>
+</div>
