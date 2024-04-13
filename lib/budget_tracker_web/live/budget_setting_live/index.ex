@@ -6,7 +6,10 @@ defmodule BudgetTrackerWeb.BudgetSettingLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :budget_settings, BudgetSettings.list_budget_settings())}
+    current_user = socket.assigns.current_user
+
+    {:ok,
+     stream(socket, :budget_settings, BudgetSettings.list_budget_settings_of_user(current_user))}
   end
 
   @impl true
