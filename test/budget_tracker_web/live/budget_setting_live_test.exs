@@ -2,7 +2,6 @@ defmodule BudgetTrackerWeb.BudgetSettingLiveTest do
   use BudgetTrackerWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
-  import BudgetTracker.AccountsFixtures
   import BudgetTracker.BudgetSettingsFixtures
 
   @create_attrs %{name: "some name", category: :incomes, planned_amount: 120.5}
@@ -11,14 +10,23 @@ defmodule BudgetTrackerWeb.BudgetSettingLiveTest do
 
   setup [:register_and_log_in_user]
 
-  defp create_budget_setting(_) do
-    user = user_fixture()
+  defp create_budget_setting(%{user: user}) do
     budget_setting = budget_setting_fixture(%{user_id: user.id})
     %{budget_setting: budget_setting}
   end
 
   describe "Index" do
     setup [:create_budget_setting]
+
+    test "show total budget planned", %{conn: conn, user: user} do
+      %{planned_amount: planned_amount} =
+        budget_setting_fixture(%{user_id: user.id, planned_amount: Money.new(12000)})
+
+      {:ok, _index_live, html} = live(conn, ~p"/budget_settings")
+
+      assert html =~ "Total Budget Planned"
+      assert html =~ to_string(planned_amount)
+    end
 
     test "lists all budget_settings", %{conn: conn, budget_setting: budget_setting} do
       {:ok, _index_live, html} = live(conn, ~p"/budget_settings")

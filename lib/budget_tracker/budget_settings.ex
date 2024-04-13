@@ -5,9 +5,23 @@ defmodule BudgetTracker.BudgetSettings do
 
   import Ecto.Query, warn: false
   alias BudgetTracker.Repo
-
+  alias BudgetTracker.Accounts.User
   alias BudgetTracker.BudgetSettings.BudgetSetting
 
+  @doc """
+  Returns the total budget.
+  """
+  @spec total_budget_of_user(user :: User.t()) :: pos_integer | neg_integer | nil
+  def total_budget_of_user(user) do
+    BudgetSetting
+    |> where(user_id: ^user.id)
+    |> Repo.aggregate(:sum, :planned_amount)
+  end
+
+  @doc """
+  Returns the list of budget_settings of a user.
+  """
+  @spec list_budget_settings_of_user(user :: User.t()) :: list(BudgetSetting.t())
   def list_budget_settings_of_user(user) do
     Repo.all(from(b in BudgetSetting, where: b.user_id == ^user.id))
   end
