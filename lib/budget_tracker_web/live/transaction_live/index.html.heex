@@ -31,7 +31,14 @@
       </.link>
     </:action>
   </.table>
-
+  <div class="flex justify-between  py-3">
+    <p class="font-bold text-sm">
+      Total Transactions
+    </p>
+    <p class="font-bold text-sm text-red-500">
+      <%= @total_transactions %>
+    </p>
+  </div>
   <.modal
     :if={@live_action in [:new, :edit]}
     id="transaction-modal"

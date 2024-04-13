@@ -2,7 +2,6 @@ defmodule BudgetTrackerWeb.TransactionLiveTest do
   use BudgetTrackerWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import BudgetTracker.AccountsFixtures
   import BudgetTracker.BudgetSettingsFixtures
   import BudgetTracker.TransactionsFixtures
 
@@ -16,8 +15,7 @@ defmodule BudgetTrackerWeb.TransactionLiveTest do
 
   setup [:register_and_log_in_user]
 
-  defp create_transaction(_) do
-    user = user_fixture()
+  defp create_transaction(%{user: user}) do
     budget_setting = budget_setting_fixture(%{user_id: user.id})
     transaction = transaction_fixture(%{user_id: user.id, budget_setting_id: budget_setting.id})
     %{transaction: transaction}
@@ -25,6 +23,13 @@ defmodule BudgetTrackerWeb.TransactionLiveTest do
 
   describe "Index" do
     setup [:create_transaction]
+
+    test "show total transactions", %{conn: conn, user: user} do
+      total_amount = BudgetTracker.Transactions.total_transactions_of_user(user)
+      {:ok, _index_live, html} = live(conn, ~p"/transactions")
+      assert html =~ "Total Transactions"
+      assert html =~ to_string(total_amount)
+    end
 
     test "lists all transactions", %{conn: conn, transaction: transaction} do
       {:ok, _index_live, html} = live(conn, ~p"/transactions")
