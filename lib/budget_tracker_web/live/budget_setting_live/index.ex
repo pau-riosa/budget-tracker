@@ -18,18 +18,21 @@ defmodule BudgetTrackerWeb.BudgetSettingLive.Index do
     socket
     |> assign(:page_title, "Edit Budget setting")
     |> assign(:budget_setting, BudgetSettings.get_budget_setting!(id))
+    |> assign(:total_budget, BudgetSettings.total_budget_of_user(socket.assigns.current_user))
   end
 
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Budget setting")
     |> assign(:budget_setting, %BudgetSetting{})
+    |> assign(:total_budget, BudgetSettings.total_budget_of_user(socket.assigns.current_user))
   end
 
   defp apply_action(socket, :index, _params) do
     socket
     |> assign(:page_title, "Listing Budget settings")
     |> assign(:budget_setting, nil)
+    |> assign(:total_budget, BudgetSettings.total_budget_of_user(socket.assigns.current_user))
   end
 
   @impl true

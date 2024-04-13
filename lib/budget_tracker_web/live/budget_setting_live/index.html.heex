@@ -35,6 +35,14 @@
       </.link>
     </:action>
   </.table>
+  <div class="flex justify-between  py-3">
+    <p class="font-bold text-sm">
+      Total Budget Planned
+    </p>
+    <p class="font-bold text-sm text-red-500">
+      <%= @total_budget %>
+    </p>
+  </div>
 
   <.modal
     :if={@live_action in [:new, :edit]}
