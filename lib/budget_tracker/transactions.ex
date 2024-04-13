@@ -19,6 +19,23 @@ defmodule BudgetTracker.Transactions do
   end
 
   @doc """
+  Returns the list of transactions of user
+
+  ## Examples
+
+      iex> list_transactions_of_user()
+      [%Transaction{}, ...]
+
+  """
+  def list_transactions_of_user(user) do
+    Transaction
+    |> where([t], t.user_id == ^user.id)
+    |> order_by(desc: :date)
+    |> preload(:budget_setting)
+    |> Repo.all()
+  end
+
+  @doc """
   Returns the list of transactions.
 
   ## Examples

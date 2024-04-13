@@ -3,10 +3,12 @@ defmodule BudgetTrackerWeb.TransactionLive.Index do
 
   alias BudgetTracker.Transactions
   alias BudgetTracker.Transactions.Transaction
+  alias BudgetTracker.Repo
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :transactions, Transactions.list_transactions())}
+    current_user = socket.assigns.current_user
+    {:ok, stream(socket, :transactions, Transactions.list_transactions_of_user(current_user))}
   end
 
   @impl true
@@ -46,7 +48,7 @@ defmodule BudgetTrackerWeb.TransactionLive.Index do
 
   @impl true
   def handle_info({BudgetTrackerWeb.TransactionLive.FormComponent, {:saved, transaction}}, socket) do
-    {:noreply, stream_insert(socket, :transactions, transaction)}
+    {:noreply, stream_insert(socket, :transactions, Repo.preload(transaction, :budget_setting))}
   end
 
   @impl true

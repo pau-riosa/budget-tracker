@@ -23,7 +23,10 @@ defmodule BudgetTracker.BudgetSettings do
   """
   @spec list_budget_settings_of_user(user :: User.t()) :: list(BudgetSetting.t())
   def list_budget_settings_of_user(user) do
-    Repo.all(from(b in BudgetSetting, where: b.user_id == ^user.id))
+    BudgetSetting
+    |> where(user_id: ^user.id)
+    |> order_by(asc: :inserted_at)
+    |> Repo.all()
   end
 
   @doc """
