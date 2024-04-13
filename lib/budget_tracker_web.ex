@@ -86,6 +86,7 @@ defmodule BudgetTrackerWeb do
       # Core UI components and translation
       import BudgetTrackerWeb.CoreComponents
       import BudgetTrackerWeb.Gettext
+      import BudgetTrackerWeb.Live.Helpers
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS

@@ -24,6 +24,14 @@ defmodule BudgetTrackerWeb.TransactionLiveTest do
   describe "Index" do
     setup [:create_transaction]
 
+    test "be able to see formatted datetime", %{conn: conn, transaction: transaction} do
+      %{date: date} = transaction
+      {:ok, _index_live, html} = live(conn, ~p"/transactions")
+
+      expected_result = BudgetTrackerWeb.Live.Helpers.format_datetime(date)
+      assert html =~ expected_result
+    end
+
     test "show total transactions", %{conn: conn, user: user} do
       total_amount = BudgetTracker.Transactions.total_transactions_of_user(user)
       {:ok, _index_live, html} = live(conn, ~p"/transactions")

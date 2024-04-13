@@ -25,7 +25,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 - [x] create budget settings
 - [x] create total budget settings 
 - [x] create total transactions
-- [ ] format datetime to human readable 
+- [x] format datetime to human readable 
 
 ## Reports
 - [ ] create overall report of income
