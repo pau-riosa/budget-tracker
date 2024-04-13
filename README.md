@@ -8,7 +8,15 @@ To start your Phoenix server:
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 
-# Dashboard
+## Dashboard
+
+- [ ] show total incomes
+- [ ] show total expenses
+- [ ] show total savings
+- [ ] show total investments
+- [ ] show total debts
+- [ ] show total budget
+- [ ] show total transactions
 
 ## Accounts
 
@@ -19,16 +27,19 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 - [x] user settings
 - [x] user password reset
 
-## Budget and Transactions
-
-- [x] create transactions
+## Budget Settings
 - [x] create budget settings
 - [x] create total budget settings 
+- [ ] create budget setting if [monthly, weekly, daily]
+
+## Transactions
+- [x] create transactions
 - [x] create total transactions
 - [x] format datetime to human readable 
 
 ## Reports
-- [ ] create overall report of income
-- [ ] create overall report of expense
-- [ ] create overall report of saving and investment
-- [ ] create overall report of debt and network
+- [ ] create overall report of incomes
+- [ ] create overall report of expenses
+- [ ] create overall report of saving 
+- [ ] create overall report of investment
+- [ ] create overall report of debt 
