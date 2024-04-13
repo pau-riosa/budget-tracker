@@ -5,8 +5,18 @@ defmodule BudgetTracker.Transactions do
 
   import Ecto.Query, warn: false
   alias BudgetTracker.Repo
-
+  alias BudgetTracker.Accounts.User
   alias BudgetTracker.Transactions.Transaction
+
+  @doc """
+  Returns the total transactions of a user.
+  """
+  @spec total_transactions_of_user(User.t()) :: pos_integer() | neg_integer() | any
+  def total_transactions_of_user(user) do
+    Transaction
+    |> where([t], t.user_id == ^user.id)
+    |> Repo.aggregate(:sum, :amount)
+  end
 
   @doc """
   Returns the list of transactions.

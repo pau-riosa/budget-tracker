@@ -18,18 +18,30 @@ defmodule BudgetTrackerWeb.TransactionLive.Index do
     socket
     |> assign(:page_title, "Edit Transaction")
     |> assign(:transaction, Transactions.get_transaction!(id))
+    |> assign(
+      :total_transactions,
+      Transactions.total_transactions_of_user(socket.assigns.current_user)
+    )
   end
 
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Transaction")
     |> assign(:transaction, %Transaction{})
+    |> assign(
+      :total_transactions,
+      Transactions.total_transactions_of_user(socket.assigns.current_user)
+    )
   end
 
   defp apply_action(socket, :index, _params) do
     socket
     |> assign(:page_title, "Listing Transactions")
     |> assign(:transaction, nil)
+    |> assign(
+      :total_transactions,
+      Transactions.total_transactions_of_user(socket.assigns.current_user)
+    )
   end
 
   @impl true
