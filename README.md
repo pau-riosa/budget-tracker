@@ -10,11 +10,11 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## Dashboard
 
-- [ ] show total incomes
-- [ ] show total expenses
-- [ ] show total savings
-- [ ] show total investments
-- [ ] show total debts
+- [x] show total incomes
+- [x] show total expenses
+- [x] show total savings
+- [x] show total investments
+- [x] show total debts
 - [ ] show total budget
 - [ ] show total transactions
 

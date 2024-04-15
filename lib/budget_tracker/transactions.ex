@@ -9,6 +9,18 @@ defmodule BudgetTracker.Transactions do
   alias BudgetTracker.Transactions.Transaction
 
   @doc """
+  Total Budget settings in dashboard
+  """
+  def total_transactions_of_user_per_category(user, category) do
+    Transaction
+    |> join(:inner, [t], bs in assoc(t, :budget_setting), as: :budget_setting)
+    |> where([t], t.user_id == ^user.id)
+    |> where([t], fragment("?::date >= date_trunc('month', current_date)", t.date))
+    |> where([budget_setting: bs], bs.category == ^category)
+    |> Repo.aggregate(:sum, :amount)
+  end
+
+  @doc """
   Returns the total transactions of a user.
   """
   @spec total_transactions_of_user(User.t()) :: pos_integer() | neg_integer() | any
