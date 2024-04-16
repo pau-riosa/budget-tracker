@@ -16,8 +16,18 @@
     }
   >
     <:col :let={{_id, budget_setting}} label="Name"><%= budget_setting.name %></:col>
-    <:col :let={{_id, budget_setting}} label="Category"><%= budget_setting.category %></:col>
+    <:col :let={{_id, budget_setting}} label="Category">
+      <.tag color={budget_setting.color}>
+        <%= budget_setting.category %>
+      </.tag>
+    </:col>
     <:col :let={{_id, budget_setting}} label="Planned amount">
+      <%= budget_setting.planned_amount %>
+    </:col>
+    <:col :let={{_id, budget_setting}} label="Actual amount">
+      <%= budget_setting.planned_amount %>
+    </:col>
+    <:col :let={{_id, budget_setting}} label="Diff">
       <%= budget_setting.planned_amount %>
     </:col>
     <:action :let={{_id, budget_setting}}>
