@@ -110,7 +110,6 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
             end
           )
         end)
-        |> IO.inspect()
 
       {:ok, %{transaction_list: transactions}}
     end)
