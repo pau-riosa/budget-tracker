@@ -8,6 +8,21 @@ defmodule BudgetTracker.Transactions do
   alias BudgetTracker.Accounts.User
   alias BudgetTracker.Transactions.Transaction
 
+  @spec transaction_to_map(Transaction.t()) :: map()
+  def transaction_to_map(transaction) do
+    %{
+      id: transaction.id,
+      date: BudgetTrackerWeb.Live.Helpers.format_datetime(transaction.date()),
+      amount:
+        Money.to_string(transaction.amount, symbol: false)
+        |> String.replace(",", "")
+        |> String.to_integer(),
+      currency: transaction.amount.currency,
+      category: transaction.budget_setting.category,
+      color: transaction.budget_setting.color
+    }
+  end
+
   @doc """
   Total Budget settings in dashboard
   """

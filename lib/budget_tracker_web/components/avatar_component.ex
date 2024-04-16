@@ -10,7 +10,7 @@ defmodule BudgetTrackerWeb.Components.Avatar do
   def avatar(assigns) do
     ~H"""
     <div
-      class="hidden sm:ml-6 sm:flex sm:items-center sm:justify-center w-12 h-12 rounded-full bg-brand/60 text-white"
+      class="hidden sm:ml-6 sm:flex sm:items-center sm:justify-center w-12 h-12 rounded-full bg-brand text-white"
       {@rest}
     >
       <%= Accounts.get_user_initials(@user) %>

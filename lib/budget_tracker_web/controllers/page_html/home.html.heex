@@ -105,7 +105,15 @@
     <div class="w-full flex flex-col items-center justify-center py-10 space-y-3">
       <div class="w-full flex justify-center items-center">
         <.link
+           :if={!@current_user}
           patch="/users/register"
+          class="px-2 py-2 bg-brand text-white rounded-md font-semibold"
+        >
+          Track your finances today!
+        </.link>
+        <.link
+           :if={@current_user}
+          patch="/dashboard"
           class="px-2 py-2 bg-brand text-white rounded-md font-semibold"
         >
           Track your finances today!

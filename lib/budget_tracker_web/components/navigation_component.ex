@@ -214,7 +214,7 @@ defmodule BudgetTrackerWeb.Components.Navigation do
     ~H"""
     <.link
       navigate={@path}
-      class={"inline-flex items-center  px-1 pt-1 text-sm font-medium #{if @active_page == @page, do: "border-b-2 border-indigo-500 text-gray-900", else: "text-gray-500 hover:border-b-2 hover:border-gray-300"}"}
+      class={"inline-flex items-center  px-1 pt-1 text-sm font-medium #{if @active_page == @page, do: "border-b-2 border-brand text-gray-900", else: "text-gray-500 hover:border-b-2 hover:border-gray-300"}"}
     >
       <%= @text %>
     </.link>
