@@ -18,8 +18,9 @@ defmodule BudgetTrackerWeb.CoreComponents do
 
   alias Phoenix.LiveView.JS
   import BudgetTrackerWeb.Gettext
-  alias BudgetTrackerWeb.Components.{Avatar, Footer, Navigation}
+  alias BudgetTrackerWeb.Components.{Avatar, Footer, Navigation, Tag}
 
+  defdelegate tag(assigns), to: Tag
   defdelegate avatar(assigns), to: Avatar
   defdelegate footer(assigns), to: Footer
   defdelegate navigation(assigns), to: Navigation

@@ -17,7 +17,9 @@
     <:col :let={{_id, transaction}} label="Amount"><%= transaction.amount %></:col>
     <:col :let={{_id, transaction}} label="Description"><%= transaction.description %></:col>
     <:col :let={{_id, transaction}} label="Category">
-      <%= transaction.budget_setting.category %>
+      <.tag color={transaction.budget_setting.color}>
+        <%= transaction.budget_setting.category %>
+      </.tag>
     </:col>
     <:action :let={{_id, transaction}}>
       <div class="sr-only">
