@@ -7,6 +7,10 @@ defmodule BudgetTracker.BudgetSettings.BudgetSetting do
     field :category, Ecto.Enum, values: [:incomes, :expenses, :savings, :investments, :debts]
     field :planned_amount, Money.Ecto.Amount.Type
     belongs_to :user, BudgetTracker.Accounts.User
+
+    field :actual_amount, Money.Ecto.Amount.Type, virtual: true
+    field :diff_amount, Money.Ecto.Amount.Type, virtual: true
+
     timestamps(type: :utc_datetime)
   end
 

@@ -23,9 +23,30 @@ defmodule BudgetTracker.BudgetSettings do
   """
   @spec list_budget_settings_of_user(user :: User.t()) :: list(BudgetSetting.t())
   def list_budget_settings_of_user(user) do
+    user_id = Ecto.UUID.dump!(user.id)
+
     BudgetSetting
     |> where(user_id: ^user.id)
     |> order_by(asc: :inserted_at)
+    |> select_merge([b], %{
+      actual_amount:
+        fragment(
+          """
+            (SELECT sum(amount) FROM transactions WHERE budget_setting_id = ? AND user_id = ?)
+          """,
+          b.id,
+          ^user_id
+        ),
+      diff_amount:
+        fragment(
+          """
+            (SELECT abs(?::integer - sum(amount)::integer) FROM transactions WHERE budget_setting_id = ? AND user_id = ?)
+          """,
+          b.planned_amount,
+          b.id,
+          ^user_id
+        )
+    })
     |> Repo.all()
   end
 
