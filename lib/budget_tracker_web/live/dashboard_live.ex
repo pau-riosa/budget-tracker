@@ -6,10 +6,15 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-3">
-      <div class="flex justify-end py-4">
-        <h1 class="font-bold text-5xl">April 2024</h1>
-      </div>
+    <div class="mx-auto max-w-7xl space-y-5 px-4 sm:px-6 lg:px-8 mt-3">
+      <.header>
+        <%= BudgetTrackerWeb.Live.Helpers.format_month_year(DateTime.utc_now()) %>
+        <:actions>
+          <.link patch={~p"/transactions/new"}>
+            <.button>New Transaction</.button>
+          </.link>
+        </:actions>
+      </.header>
       <div class="mx-auto grid max-w-2xl grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-5">
         <.total_value_card path={~p"/incomes"} title="Total Incomes" amount={@incomes_total_amount} />
         <.total_value_card
@@ -110,7 +115,6 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
             end
           )
         end)
-        |> IO.inspect()
 
       {:ok, %{transaction_list: transactions}}
     end)
