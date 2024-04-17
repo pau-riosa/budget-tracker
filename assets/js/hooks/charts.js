@@ -1,4 +1,4 @@
-import Chart from "chart.js/auto";
+import Chart from "../../chart.js/auto";
 export const BarChart = {
   dataset() {
     return JSON.parse(this.el.dataset.items);
