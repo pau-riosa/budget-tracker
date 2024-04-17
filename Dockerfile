@@ -22,7 +22,7 @@ FROM ${BUILDER_IMAGE} as builder
 
 # install build dependencies
 RUN apt-get update -y && apt-get install -y build-essential git \
-    && apt-get clean && rm -f /var/lib/apt/lists/*_*
+    npm && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # prepare build dir
 WORKDIR /app
@@ -48,6 +48,14 @@ RUN mix deps.compile
 COPY priv priv
 
 COPY lib lib
+
+RUN npm install \
+  tailwindcss \
+  postcss \
+  autoprefixer \
+  postcss-import \
+  postcss-nested \
+  chart.js
 
 COPY assets assets
 
