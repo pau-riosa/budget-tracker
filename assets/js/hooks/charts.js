@@ -16,7 +16,18 @@ export const BarChart = {
     const ctx = this.el;
     const data = {
       type: "bar",
-      label: "transactions",
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: "top",
+          },
+          title: {
+            display: true,
+            text: "Overall Transaction Analytics By Category",
+          },
+        },
+      },
       data: {
         // random data to validate chart generation
         //
