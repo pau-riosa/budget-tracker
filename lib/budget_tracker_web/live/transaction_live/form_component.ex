@@ -28,7 +28,7 @@ defmodule BudgetTrackerWeb.TransactionLive.FormComponent do
         />
         <.input field={@form[:date]} type="datetime-local" label="Date" />
         <.input field={@form[:description]} type="text" label="Description" />
-        <.input field={@form[:amount]} type="number" label="Amount" />
+        <.input field={@form[:amount]} type="text" label="Amount" />
         <.input field={@form[:user_id]} type="hidden" value={@current_user.id} />
         <:actions>
           <.button phx-disable-with="Saving...">Save Transaction</.button>
