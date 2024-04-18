@@ -12,7 +12,7 @@ defmodule BudgetTracker.Transactions do
   def transaction_to_map(transaction) do
     %{
       id: transaction.id,
-      date: BudgetTrackerWeb.Live.Helpers.format_datetime(transaction.date()),
+      date: BudgetTrackerWeb.Live.Helpers.format_datetime(transaction.date),
       amount:
         Money.to_string(transaction.amount, symbol: false)
         |> String.replace(",", "")

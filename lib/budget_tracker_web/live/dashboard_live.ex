@@ -63,7 +63,7 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
           </div>
         </div>
       </:loading>
-      <:failed :let={reason}>
+      <:failed :let={_reason}>
         <p>There was an error loading the result</p>
       </:failed>
       <.link patch={@path}>
@@ -100,9 +100,11 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
   end
 
   defp assign_async_transaction_list(socket) do
+    current_user = socket.assigns.current_user
+
     assign_async(socket, :transaction_list, fn ->
       transactions =
-        socket.assigns.current_user
+        current_user
         |> Transactions.list_transactions_of_user()
         |> Enum.map(&Transactions.transaction_to_map/1)
         |> Enum.group_by(&Map.get(&1, :category))
@@ -121,10 +123,12 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
   end
 
   defp assign_async_incomes_total_amount(socket) do
+    current_user = socket.assigns.current_user
+
     assign_async(socket, :incomes_total_amount, fn ->
       total_amount =
         Transactions.total_transactions_of_user_per_category(
-          socket.assigns.current_user,
+          current_user,
           :incomes
         )
 
@@ -133,10 +137,12 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
   end
 
   defp assign_async_expenses_total_amount(socket) do
+    current_user = socket.assigns.current_user
+
     assign_async(socket, :expenses_total_amount, fn ->
       total_amount =
         Transactions.total_transactions_of_user_per_category(
-          socket.assigns.current_user,
+          current_user,
           :expenses
         )
 
@@ -145,10 +151,12 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
   end
 
   defp assign_async_debts_total_amount(socket) do
+    current_user = socket.assigns.current_user
+
     assign_async(socket, :debts_total_amount, fn ->
       total_amount =
         Transactions.total_transactions_of_user_per_category(
-          socket.assigns.current_user,
+          current_user,
           :debts
         )
 
@@ -157,10 +165,12 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
   end
 
   defp assign_async_investments_total_amount(socket) do
+    current_user = socket.assigns.current_user
+
     assign_async(socket, :investments_total_amount, fn ->
       total_amount =
         Transactions.total_transactions_of_user_per_category(
-          socket.assigns.current_user,
+          current_user,
           :investments
         )
 
@@ -169,10 +179,12 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
   end
 
   defp assign_async_savings_total_amount(socket) do
+    current_user = socket.assigns.current_user
+
     assign_async(socket, :savings_total_amount, fn ->
       total_amount =
         Transactions.total_transactions_of_user_per_category(
-          socket.assigns.current_user,
+          current_user,
           :savings
         )
 
