@@ -27,7 +27,7 @@ defmodule BudgetTrackerWeb.BudgetSettingLive.FormComponent do
           options={Ecto.Enum.values(BudgetTracker.BudgetSettings.BudgetSetting, :category)}
         />
         <.input field={@form[:name]} type="text" label="Name" />
-        <.input field={@form[:planned_amount]} type="number" label="Planned amount" step="0.01" />
+        <.input field={@form[:planned_amount]} type="text" label="Planned amount" step="0.01" />
         <.input field={@form[:user_id]} type="hidden" value={@current_user.id} />
         <.input field={@form[:color]} type="color" />
         <:actions>
