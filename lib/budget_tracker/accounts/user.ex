@@ -1,6 +1,8 @@
 defmodule BudgetTracker.Accounts.User do
   use BudgetTracker.Schema
 
+  @type t() :: __MODULE__
+
   schema "users" do
     field :first_name, :string
     field :last_name, :string
@@ -8,7 +10,7 @@ defmodule BudgetTracker.Accounts.User do
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
-
+    field :currency, :string
     timestamps(type: :utc_datetime)
   end
 
@@ -85,6 +87,24 @@ defmodule BudgetTracker.Accounts.User do
       |> unique_constraint(:email)
     else
       changeset
+    end
+  end
+
+  @doc """
+  A user changeset for setting the currency.
+  """
+  @spec currency_changeset(user :: t(), attrs :: map()) :: Ecto.Changeset.t()
+  def currency_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:currency])
+    |> case do
+      %{changes: %{currency: value}} = changeset ->
+        if Money.Currency.exists?(value),
+          do: changeset,
+          else: add_error(changeset, :currency, "is invalid")
+
+      changeset ->
+        changeset
     end
   end
 

@@ -14,6 +14,25 @@ defmodule BudgetTrackerWeb.UserSettingsLive do
       <div class="space-y-12 divide-y">
         <div>
           <.simple_form
+            for={@currency_form}
+            id="currency_form"
+            phx-submit="update_currency"
+            phx-change="validate_currency"
+          >
+            <.input
+              field={@currency_form[:currency]}
+              type="select"
+              label="Currency"
+              options={@list_of_currencies}
+              required
+            />
+            <:actions>
+              <.button phx-disable-with="Setting...">Set Currency</.button>
+            </:actions>
+          </.simple_form>
+        </div>
+        <div>
+          <.simple_form
             for={@email_form}
             id="email_form"
             phx-submit="update_email"
@@ -75,6 +94,14 @@ defmodule BudgetTrackerWeb.UserSettingsLive do
     """
   end
 
+  defp list_of_currencies() do
+    Money.Currency.all()
+    |> Enum.sort_by(fn {code, _} -> code end, &<=/2)
+    |> Enum.map(fn {code, %{name: name} = _currency} ->
+      {"#{code} - #{name}", code}
+    end)
+  end
+
   def mount(%{"token" => token}, _session, socket) do
     socket =
       case Accounts.update_user_email(socket.assigns.current_user, token) do
@@ -90,19 +117,48 @@ defmodule BudgetTrackerWeb.UserSettingsLive do
 
   def mount(_params, _session, socket) do
     user = socket.assigns.current_user
+    currency_changeset = Accounts.change_currency(user)
     email_changeset = Accounts.change_user_email(user)
     password_changeset = Accounts.change_user_password(user)
 
     socket =
       socket
+      |> assign(:list_of_currencies, list_of_currencies())
       |> assign(:current_password, nil)
       |> assign(:email_form_current_password, nil)
       |> assign(:current_email, user.email)
+      |> assign(:currency_form, to_form(currency_changeset))
       |> assign(:email_form, to_form(email_changeset))
       |> assign(:password_form, to_form(password_changeset))
       |> assign(:trigger_submit, false)
 
     {:ok, socket}
+  end
+
+  def handle_event("validate_currency", params, socket) do
+    %{"user" => user_params} = params
+
+    currency_form =
+      socket.assigns.current_user
+      |> Accounts.change_currency(user_params)
+      |> Map.put(:action, :validate)
+      |> to_form()
+
+    {:noreply, assign(socket, currency_form: currency_form)}
+  end
+
+  def handle_event("update_currency", params, socket) do
+    %{"user" => user_params} = params
+    user = socket.assigns.current_user
+
+    case Accounts.update_currency(user, user_params) do
+      {:ok, _applied_user} ->
+        info = "Currency changed successfully."
+        {:noreply, socket |> put_flash(:info, info)}
+
+      {:error, changeset} ->
+        {:noreply, assign(socket, :currency_form, to_form(Map.put(changeset, :action, :insert)))}
+    end
   end
 
   def handle_event("validate_email", params, socket) do

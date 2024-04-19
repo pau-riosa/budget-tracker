@@ -25,6 +25,57 @@ defmodule BudgetTrackerWeb.UserSettingsLiveTest do
     end
   end
 
+  describe "update currency form" do
+    setup %{conn: conn} do
+      password = valid_user_password()
+      user = user_fixture(%{password: password})
+      %{conn: log_in_user(conn, user), user: user, password: password}
+    end
+
+    test "updates the currency", %{conn: conn, user: user} do
+      new_currency = "USD"
+
+      {:ok, lv, _html} = live(conn, ~p"/users/settings")
+
+      lv
+      |> form("#currency_form", %{
+        "user" => %{"currency" => new_currency}
+      })
+      |> render_submit()
+
+      user = Accounts.get_user_by_email(user.email)
+      assert user
+      assert user.currency == new_currency
+    end
+
+    test "renders errors with invalid data (phx-change)", %{conn: conn} do
+      {:ok, lv, _html} = live(conn, ~p"/users/settings")
+
+      result =
+        lv
+        |> element("#currency_form")
+        |> render_change(%{
+          "action" => "update_currency",
+          "user" => %{"currency" => "invalid"}
+        })
+
+      assert result =~ "is invalid"
+    end
+
+    test "renders errors with invalid data (phx-submit)", %{conn: conn} do
+      {:ok, lv, _html} = live(conn, ~p"/users/settings")
+
+      result =
+        lv
+        |> form("#currency_form")
+        |> render_submit(%{
+          "user" => %{"currency" => "invalid"}
+        })
+
+      assert result =~ "is invalid"
+    end
+  end
+
   describe "update email form" do
     setup %{conn: conn} do
       password = valid_user_password()

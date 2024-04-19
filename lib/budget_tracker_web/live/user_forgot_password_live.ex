@@ -33,7 +33,7 @@ defmodule BudgetTrackerWeb.UserForgotPasswordLive do
 
   def handle_event("send_email", %{"user" => %{"email" => email}}, socket) do
     if user = Accounts.get_user_by_email(email) do
-      if MIX_ENV == "dev" do
+      if MIX_ENV != "prod" do
         Accounts.deliver_user_reset_password_instructions(
           user,
           &url(~p"/users/reset_password/#{&1}")
