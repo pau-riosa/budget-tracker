@@ -23,13 +23,13 @@ defmodule BudgetTrackerWeb.BudgetSettingLive.FormComponent do
           field={@form[:category]}
           type="select"
           label="Category"
-          prompt="Choose a value"
+          prompt="Choose category"
           options={Ecto.Enum.values(BudgetTracker.BudgetSettings.BudgetSetting, :category)}
         />
         <.input field={@form[:name]} type="text" label="Name" />
         <.input field={@form[:planned_amount]} type="text" label="Planned amount" step="0.01" />
         <.input field={@form[:user_id]} type="hidden" value={@current_user.id} />
-        <.input field={@form[:color]} type="color" />
+        <.input field={@form[:color]} type="color" label="Choose color" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Budget setting</.button>
         </:actions>

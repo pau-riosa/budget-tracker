@@ -13,6 +13,15 @@ defmodule BudgetTrackerWeb.Components.Navigation do
         <div class="mx-auto max-w-7xl px-3 lg:px-0 py-0 lg:py-1">
           <div class="flex h-16 justify-between">
             <div class="flex">
+              <.link
+                navigate={~p"/"}
+                class="text-brand flex items-center text-sm font-semibold leading-6"
+              >
+                PennyWise: Budget Tracker
+                <small class="bg-brand/5 text-[0.8125rem] ml-3 rounded-full px-2 font-medium leading-6">
+                  v<%= Application.spec(:budget_tracker, :vsn) %>
+                </small>
+              </.link>
               <div :if={@current_user} class="hidden sm:ml-6 sm:flex sm:space-x-8">
                 <.desktop_active_link
                   path={~p"/dashboard"}
@@ -47,7 +56,7 @@ defmodule BudgetTrackerWeb.Components.Navigation do
               </.link>
               <.link
                 href={~p"/users/register"}
-                class="text-[0.8125rem] border border-brand bg-brand px-3 py-1 rounded-md leading-6 text-white font-semibold hover:bg-blue-700/80 hover:border-transparent"
+                class="text-[0.8125rem] border border-brand bg-brand px-3 py-1 rounded-md leading-6 text-white font-semibold hover:bg-brand/80 hover:border-transparent"
               >
                 Register
               </.link>
