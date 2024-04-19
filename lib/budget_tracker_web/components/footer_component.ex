@@ -23,6 +23,26 @@ defmodule BudgetTrackerWeb.Components.Footer do
                 <ul role="list" class="mt-6 space-y-4">
                   <li>
                     <a
+                      href="https://unsplash.com/@alexandermils?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+                      class="text-sm leading-6 text-gray-400 hover:text-gray-500"
+                    >
+                      Photo by Alexander Mills on
+                    </a>
+                    <a
+                      href="https://unsplash.com/photos/fan-of-100-us-dollar-banknotes-lCPhGxs7pww?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+                      class="text-sm leading-6 text-gray-400 hover:text-gray-500"
+                    >
+                      Unsplash
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://unsplash.com/@micheile?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+                      class="text-sm leading-6 text-gray-400 hover:text-gray-500"
+                    >
+                      Micheile Henderson
+                    </a>
+                    <a
                       href="https://unsplash.com/photos/green-plant-in-clear-glass-vase-ZVprbBmT8QA?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
                       class="text-sm leading-6 text-gray-400 hover:text-gray-500"
                     >

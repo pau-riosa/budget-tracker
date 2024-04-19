@@ -13,11 +13,11 @@
       </svg>
       <div class="relative px-6 py-20 lg:px-0 lg:py-30 lg:pr-0">
         <div class="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl">
-          <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl leading-relaxed tracking-tighter">
+          <h1 class="text-4xl font-bold tracking-tighter text-brand-900/30 sm:text-6xl leading-relaxed">
             Say hello to financial freedom with <strong class="text-brand">Pennywise</strong>
           </h1>
-          <p class="mt-6 text-lg leading-8 text-gray-600">
-            Pennywise is designed to help you take control of your finances, track your spending, and reach your financial goals with ease.
+          <p class="mt-6 text-lg leading-8 text-gray-600 tracking-tight">
+            Designed to help you take control of your finances, track your spending, and reach your financial goals with ease.
           </p>
           <div class="mt-10 flex items-center gap-x-6">
             <.link
@@ -39,6 +39,78 @@
       class="aspect-[3/2] object-cover lg:aspect-auto lg:h-full lg:w-full"
       src="https://images.unsplash.com/photo-1579621970795-87facc2f976d?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     />
+  </div>
+</div>
+<div class="overflow-hidden bg-brand-900 py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+      <div class="lg:ml-auto lg:pl-4 lg:pt-4">
+        <div class="lg:max-w-lg">
+          <h2 class="text-base font-semibold leading-7 text-brand-100">
+            Empower, Connect, Inspire
+          </h2>
+          <p class="mt-2 text-3xl font-bold tracking-tight text-gray-300 sm:text-4xl">
+            With Pennywise
+          </p>
+          <p class="mt-6 text-lg leading-8 text-gray-200">
+            You can easily categorize your expenses, set budget limits, and visualize your financial progress through intuitive charts and graphs. Whether you're saving for a dream vacation, a new car, or just looking to manage your day-to-day expenses better, Pennywise is here to support you every step of the way.
+          </p>
+          <dl class="mt-10 max-w-xl space-y-8 text-base leading-7 text-gray-600 lg:max-w-none">
+            <div class="relative pl-9">
+              <dt class="inline font-semibold text-gray-300">
+                <.icon
+                  name="hero-check-solid"
+                  class="absolute left-1 top-1 h-5 w-5 text-brand-100"
+                /> Manage your finances
+              </dt>
+            </div>
+
+            <div class="relative pl-9">
+              <dt class="inline font-semibold text-gray-300">
+                <.icon name="hero-eye-solid" class="absolute left-1 top-1 h-5 w-5 text-brand-100" />
+                Track your progress
+              </dt>
+            </div>
+            <div class="relative pl-9">
+              <dt class="inline font-semibold text-gray-300">
+                <.icon
+                  name="hero-gift-top-solid"
+                  class="absolute left-1 top-1 h-5 w-5 text-brand-100"
+                /> Be financially Free
+              </dt>
+            </div>
+          </dl>
+        </div>
+      </div>
+      <div class="flex items-start justify-end lg:order-first">
+        <img
+          src="https://images.unsplash.com/photo-1553729459-efe14ef6055d?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Find the right team-player match with HoopsProfile"
+          class="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem]"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+<div class="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
+  <div class="mx-auto max-w-3xl text-center">
+    <h2 class="text-3xl font-bold tracking-tighter text-gray-900 sm:text-4xl">
+      Say goodbye to financial stress and hello to financial freedom
+    </h2>
+    <p class="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-600">
+      Start your journey to smarter money management today!
+    </p>
+    <div class="mt-10 flex items-center justify-center gap-x-6">
+      <.link
+        navigate={~p"/users/register"}
+        class="inline-flex items-center focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 border text-center rounded-md px-3 py-2 text-sm font-medium leading-4 border-transparent bg-brand text-white shadow-sm hover:bg-blue-700/50 px-3.5 py-2.5"
+      >
+        Get Started
+      </.link>
+      <.link class="text-sm font-semibold">
+        Learn more <.icon name="hero-arrow-small-right" />
+      </.link>
+    </div>
   </div>
 </div>
 <.footer />
