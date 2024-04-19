@@ -3,6 +3,6 @@ defmodule BudgetTrackerWeb.PageControllerTest do
 
   test "GET /", %{conn: conn} do
     conn = get(conn, ~p"/")
-    assert html_response(conn, 200) =~ "Peace of mind for tracking your finances"
+    assert html_response(conn, 200) =~ "Pennywise"
   end
 end
