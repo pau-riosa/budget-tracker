@@ -120,6 +120,28 @@ defmodule BudgetTracker.Accounts do
   end
 
   @doc """
+  Returns an `%Ecto.Changeset{}` for changing the user currency.
+
+  ## Examples
+
+      iex> change_currency_email(user)
+      %Ecto.Changeset{data: %User{}}
+
+  """
+  def change_currency(user, attrs \\ %{}) do
+    User.currency_changeset(user, attrs)
+  end
+
+  @doc """
+  Updates the user currency. 
+  """
+  def update_currency(user, attrs) do
+    user
+    |> User.currency_changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
   Emulates that the email will change without actually changing
   it in the database.
 
