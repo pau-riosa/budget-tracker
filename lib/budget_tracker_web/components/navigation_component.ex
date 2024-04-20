@@ -22,20 +22,30 @@ defmodule BudgetTrackerWeb.Components.Navigation do
                   v<%= Application.spec(:budget_tracker, :vsn) %>
                 </small>
               </.link>
-              <div :if={@current_user} class="hidden sm:ml-6 sm:flex sm:space-x-8">
+
+              <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
                 <.desktop_active_link
+                  path={~p"/about"}
+                  text="About"
+                  active_page={@active_page}
+                  page={:about}
+                />
+                <.desktop_active_link
+                  :if={@current_user}
                   path={~p"/dashboard"}
                   text="Dashboard"
                   active_page={@active_page}
                   page={:dashboard}
                 />
                 <.desktop_active_link
+                  :if={@current_user}
                   path={~p"/budget_settings"}
                   text="Budget Settings"
                   active_page={@active_page}
                   page={:budget}
                 />
                 <.desktop_active_link
+                  :if={@current_user}
                   path={~p"/transactions"}
                   text="Transactions"
                   active_page={@active_page}
@@ -86,18 +96,10 @@ defmodule BudgetTrackerWeb.Components.Navigation do
                   </li>
                   <li>
                     <.link
-                      href={~p"/dashboard"}
-                      class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-                    >
-                      Dashboard
-                    </.link>
-                  </li>
-                  <li>
-                    <.link
                       href={~p"/users/settings"}
                       class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
                     >
-                      Settings
+                      Account Settings
                     </.link>
                   </li>
                   <li>
@@ -154,16 +156,31 @@ defmodule BudgetTrackerWeb.Components.Navigation do
             <div class="px-2 space-y-1">
               <div class="flex flex-col space-y-3">
                 <.mobile_active_link
+                  path={~p"/about"}
+                  text="About"
+                  active_page={@active_page}
+                  page={:about}
+                />
+                <.mobile_active_link
+                  :if={@current_user}
                   path={~p"/dashboard"}
                   text="Dashboard"
                   active_page={@active_page}
                   page={:dashboard}
                 />
                 <.mobile_active_link
+                  :if={@current_user}
                   path={~p"/budget_settings"}
                   text="Budget Settings"
                   active_page={@active_page}
                   page={:budget_setting}
+                />
+                <.mobile_active_link
+                  :if={@current_user}
+                  path={~p"/transactions"}
+                  text="Transactions"
+                  active_page={@active_page}
+                  page={:transaction}
                 />
               </div>
             </div>
