@@ -5,7 +5,7 @@ defmodule BudgetTrackerWeb.Components.Footer do
   @spec footer(map()) :: Phoenix.LiveView.Rendered.t()
   def footer(assigns) do
     ~H"""
-    <div class="mx-auto mt-8 sm:mt-32 max-w-7xl sm:px-3 lg:px-5">
+    <div class="mx-auto mt-8 sm:mt-32 max-w-7xl px-10 lg:px-5">
       <footer
         aria-labelledby="footer-heading"
         class="relative border-t border-gray-900/10 py-24 sm:py-32"
