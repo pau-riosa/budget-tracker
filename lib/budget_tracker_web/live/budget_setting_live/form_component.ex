@@ -26,6 +26,14 @@ defmodule BudgetTrackerWeb.BudgetSettingLive.FormComponent do
           prompt="Choose category"
           options={Ecto.Enum.values(BudgetTracker.BudgetSettings.BudgetSetting, :category)}
         />
+
+        <.input
+          field={@form[:type]}
+          type="select"
+          label="Type"
+          prompt="Choose budget-setting type"
+          options={@type_options}
+        />
         <.input field={@form[:name]} type="text" label="Name" />
         <.input field={@form[:planned_amount]} type="text" label="Planned amount" step="0.01" />
         <.input field={@form[:user_id]} type="hidden" value={@current_user.id} />
@@ -45,6 +53,7 @@ defmodule BudgetTrackerWeb.BudgetSettingLive.FormComponent do
     {:ok,
      socket
      |> assign(assigns)
+     |> assign_type_options()
      |> assign_form(changeset)}
   end
 
@@ -97,6 +106,21 @@ defmodule BudgetTrackerWeb.BudgetSettingLive.FormComponent do
 
   defp assign_form(socket, %Ecto.Changeset{} = changeset) do
     assign(socket, :form, to_form(changeset))
+  end
+
+  defp assign_type_options(socket) do
+    type_options =
+      BudgetSettings.BudgetSetting
+      |> Ecto.Enum.values(:type)
+      |> Enum.map(fn type ->
+        case type do
+          :fixed -> {"fixed (fixed monthly)", :fixed}
+          :variable -> {"variable (changes monthly)", :variable}
+          :planned -> {"planned (set goal)", :planned}
+        end
+      end)
+
+    assign(socket, type_options: type_options)
   end
 
   defp notify_parent(msg), do: send(self(), {__MODULE__, msg})

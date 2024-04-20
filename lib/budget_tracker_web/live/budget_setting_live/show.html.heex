@@ -10,7 +10,12 @@
   </.header>
 
   <.list>
-    <:item title="Category"><%= @budget_setting.category %></:item>
+    <:item title="Category">
+      <.tag color={@budget_setting.color}>
+        <%= @budget_setting.category %>
+      </.tag>
+    </:item>
+    <:item title="Type"><%= @budget_setting.type %></:item>
     <:item title="Name"><%= @budget_setting.name %></:item>
     <:item title="Planned amount"><%= @budget_setting.planned_amount %></:item>
   </.list>
