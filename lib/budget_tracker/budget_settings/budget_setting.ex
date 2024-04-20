@@ -5,6 +5,7 @@ defmodule BudgetTracker.BudgetSettings.BudgetSetting do
     field :name, :string
     field :color, :string, default: "#000000"
     field :category, Ecto.Enum, values: [:incomes, :expenses, :savings, :investments, :debts]
+    field :type, Ecto.Enum, values: [:fixed, :variable, :planned], default: :planned
     field :planned_amount, Money.Ecto.Amount.Type
     belongs_to :user, BudgetTracker.Accounts.User
 
@@ -17,7 +18,7 @@ defmodule BudgetTracker.BudgetSettings.BudgetSetting do
   @doc false
   def changeset(budget_setting, attrs) do
     budget_setting
-    |> cast(attrs, [:category, :name, :planned_amount, :user_id, :color])
+    |> cast(attrs, [:category, :name, :planned_amount, :user_id, :color, :type])
     |> validate_required([:category, :name, :planned_amount, :user_id, :color])
   end
 end
