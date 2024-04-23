@@ -8,6 +8,18 @@ defmodule BudgetTracker.Transactions do
   alias BudgetTracker.Accounts.User
   alias BudgetTracker.Transactions.Transaction
 
+  @spec transfer_amount_v1_to_amount_v2() :: :ok
+  def transfer_amount_v1_to_amount_v2() do
+    Transaction
+    |> from(as: :transactions)
+    |> join(:inner, [transactions: t], u in User, on: u.id == t.user_id, as: :users)
+    |> where([transactions: t], is_nil(t.amount_v2))
+    |> update([users: u, transactions: t],
+      set: [amount_v2: fragment("(?, ?)", t.amount, u.currency)]
+    )
+    |> Repo.update_all([])
+  end
+
   @spec transaction_to_map(Transaction.t()) :: map()
   def transaction_to_map(transaction) do
     %{

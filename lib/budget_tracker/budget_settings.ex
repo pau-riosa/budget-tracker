@@ -8,6 +8,18 @@ defmodule BudgetTracker.BudgetSettings do
   alias BudgetTracker.Accounts.User
   alias BudgetTracker.BudgetSettings.BudgetSetting
 
+  @spec transfer_amount_v1_to_amount_v2() :: :ok
+  def transfer_amount_v1_to_amount_v2() do
+    BudgetSetting
+    |> from(as: :budget_settings)
+    |> join(:inner, [budget_settings: b], u in User, on: u.id == b.user_id, as: :users)
+    |> where([budget_settings: b], is_nil(b.planned_amount_v2))
+    |> update([users: u, budget_settings: b],
+      set: [planned_amount_v2: fragment("(?, ?)", b.planned_amount, u.currency)]
+    )
+    |> Repo.update_all([])
+  end
+
   @doc """
   Returns the total budget.
   """

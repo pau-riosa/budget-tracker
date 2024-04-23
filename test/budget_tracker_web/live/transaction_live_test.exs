@@ -5,13 +5,13 @@ defmodule BudgetTrackerWeb.TransactionLiveTest do
   import BudgetTracker.BudgetSettingsFixtures
   import BudgetTracker.TransactionsFixtures
 
-  @create_attrs %{date: "2024-04-11T23:04:00Z", description: "some description", amount: 42}
+  @create_attrs %{date: "2024-04-11T23:04:00Z", description: "some description", amount_v2: 42}
   @update_attrs %{
     date: "2024-04-12T23:04:00Z",
     description: "some updated description",
-    amount: 43
+    amount_v2: 43
   }
-  @invalid_attrs %{date: nil, description: nil, amount: nil}
+  @invalid_attrs %{date: nil, description: nil, amount_v2: nil}
 
   setup [:register_and_log_in_user]
 
