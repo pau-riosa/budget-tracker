@@ -7,14 +7,12 @@ defmodule BudgetTracker.TransactionsFixtures do
   @doc """
   Generate a transaction.
   """
-  import BudgetTracker.AccountsFixtures
-  import BudgetTracker.BudgetSettingsFixtures
-
   def transaction_fixture(attrs \\ %{}) do
     {:ok, transaction} =
       attrs
       |> Enum.into(%{
         amount: 42,
+        amount_v2: 42,
         date: ~U[2024-04-11 23:04:00Z],
         description: "some description"
       })

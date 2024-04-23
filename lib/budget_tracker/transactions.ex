@@ -26,10 +26,10 @@ defmodule BudgetTracker.Transactions do
       id: transaction.id,
       date: BudgetTrackerWeb.Live.Helpers.format_datetime(transaction.date),
       amount:
-        Money.to_string(transaction.amount, symbol: false)
+        Money.to_string(transaction.amount_v2, symbol: false)
         |> String.replace(",", "")
         |> String.to_integer(),
-      currency: transaction.amount.currency,
+      currency: transaction.amount_v2.currency,
       category: transaction.budget_setting.category,
       color: transaction.budget_setting.color
     }
@@ -44,7 +44,8 @@ defmodule BudgetTracker.Transactions do
     |> where([t], t.user_id == ^user.id)
     |> where([t], fragment("?::date >= date_trunc('month', current_date)", t.date))
     |> where([budget_setting: bs], bs.category == ^category)
-    |> Repo.aggregate(:sum, :amount)
+    |> Repo.all()
+    |> Enum.reduce(Money.new(0, :USD), fn t, acc -> Money.add(t.amount_v2, acc) end)
   end
 
   @doc """
@@ -54,7 +55,8 @@ defmodule BudgetTracker.Transactions do
   def total_transactions_of_user(user) do
     Transaction
     |> where([t], t.user_id == ^user.id)
-    |> Repo.aggregate(:sum, :amount)
+    |> Repo.all()
+    |> Enum.reduce(Money.new(0, :USD), fn t, acc -> Money.add(t.amount_v2, acc) end)
   end
 
   @doc """
