@@ -51,7 +51,7 @@ defmodule BudgetTracker.TransactionsTest do
       assert changeset.valid?
 
       assert {:ok, result} = BudgetTracker.Repo.update(changeset)
-      assert result.amount_v2 == %Money{amount: 100_000_000, currency: :USD}
+      assert result.amount_v2 == %Money{amount: 100_000_000, currency: :PHP}
     end
 
     test "valid amount_v2 -> decimal number" do
@@ -64,7 +64,7 @@ defmodule BudgetTracker.TransactionsTest do
       assert changeset.valid?
 
       assert {:ok, result} = BudgetTracker.Repo.update(changeset)
-      assert result.amount_v2 == %Money{amount: 1_000_000, currency: :USD}
+      assert result.amount_v2 == %Money{amount: 1_000_000, currency: :PHP}
     end
 
     test "list_transactions/0 returns all transactions" do
@@ -96,7 +96,7 @@ defmodule BudgetTracker.TransactionsTest do
       assert {:ok, %Transaction{} = transaction} = Transactions.create_transaction(valid_attrs)
       assert transaction.date == ~U[2024-04-11 23:04:00Z]
       assert transaction.description == "some description"
-      assert transaction.amount_v2 == %Money{amount: 4200, currency: :USD}
+      assert transaction.amount_v2 == %Money{amount: 4200, currency: :PHP}
     end
 
     test "create_transaction/1 with invalid data returns error changeset" do
@@ -119,7 +119,7 @@ defmodule BudgetTracker.TransactionsTest do
 
       assert transaction.date == ~U[2024-04-12 23:04:00Z]
       assert transaction.description == "some updated description"
-      assert transaction.amount_v2 == %Money{amount: 4300, currency: :USD}
+      assert transaction.amount_v2 == %Money{amount: 4300, currency: :PHP}
     end
 
     test "update_transaction/2 with invalid data returns error changeset" do

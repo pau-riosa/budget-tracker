@@ -39,7 +39,7 @@ defmodule BudgetTracker.BudgetSettings.BudgetSetting do
 
       %{planned_amount_v2: amount} ->
         try do
-          put_change(changeset, :planned_amount_v2, Money.parse!(amount, :USD))
+          put_change(changeset, :planned_amount_v2, Money.parse!(amount, :PHP))
         rescue
           _ -> add_error(changeset, :planned_amount_v2, "invalid amount")
         end

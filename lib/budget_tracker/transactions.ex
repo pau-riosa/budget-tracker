@@ -45,7 +45,7 @@ defmodule BudgetTracker.Transactions do
     |> where([t], fragment("?::date >= date_trunc('month', current_date)", t.date))
     |> where([budget_setting: bs], bs.category == ^category)
     |> Repo.all()
-    |> Enum.reduce(Money.new(0, :USD), fn t, acc -> Money.add(t.amount_v2, acc) end)
+    |> Enum.reduce(Money.new(0, :PHP), fn t, acc -> Money.add(t.amount_v2, acc) end)
   end
 
   @doc """
@@ -56,7 +56,7 @@ defmodule BudgetTracker.Transactions do
     Transaction
     |> where([t], t.user_id == ^user.id)
     |> Repo.all()
-    |> Enum.reduce(Money.new(0, :USD), fn t, acc -> Money.add(t.amount_v2, acc) end)
+    |> Enum.reduce(Money.new(0, :PHP), fn t, acc -> Money.add(t.amount_v2, acc) end)
   end
 
   @doc """

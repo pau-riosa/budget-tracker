@@ -8,7 +8,7 @@
 import Config
 
 config :money,
-  default_currency: :USD,
+  default_currency: :PHP,
   separator: ",",
   delimiter: ".",
   symbol: true,

@@ -48,7 +48,7 @@ defmodule BudgetTracker.BudgetSettingsTest do
       assert changeset.valid?
 
       assert {:ok, result} = BudgetTracker.Repo.update(changeset)
-      assert result.planned_amount_v2 == %Money{amount: 100_000_000, currency: :USD}
+      assert result.planned_amount_v2 == %Money{amount: 100_000_000, currency: :PHP}
     end
 
     test "valid planned_amount_v2 -> decimal number" do
@@ -60,7 +60,7 @@ defmodule BudgetTracker.BudgetSettingsTest do
       assert changeset.valid?
 
       assert {:ok, result} = BudgetTracker.Repo.update(changeset)
-      assert result.planned_amount_v2 == %Money{amount: 1_000_000, currency: :USD}
+      assert result.planned_amount_v2 == %Money{amount: 1_000_000, currency: :PHP}
     end
 
     test "list_budget_settings/0 returns all budget_settings" do
@@ -90,7 +90,7 @@ defmodule BudgetTracker.BudgetSettingsTest do
 
       assert budget_setting.name == "some name"
       assert budget_setting.category == :incomes
-      assert budget_setting.planned_amount_v2 == %Money{amount: 12000, currency: :USD}
+      assert budget_setting.planned_amount_v2 == %Money{amount: 12000, currency: :PHP}
     end
 
     test "create_budget_setting/1 with invalid data returns error changeset" do
@@ -112,7 +112,7 @@ defmodule BudgetTracker.BudgetSettingsTest do
 
       assert budget_setting.name == "some updated name"
       assert budget_setting.category == :expenses
-      assert budget_setting.planned_amount_v2 == %Money{amount: 45600, currency: :USD}
+      assert budget_setting.planned_amount_v2 == %Money{amount: 45600, currency: :PHP}
     end
 
     test "update_budget_setting/2 with invalid data returns error changeset" do

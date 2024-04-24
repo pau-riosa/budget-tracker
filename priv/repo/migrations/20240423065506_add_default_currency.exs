@@ -3,7 +3,7 @@ defmodule BudgetTracker.Repo.Migrations.AddDefaultCurrency do
 
   def change do
     alter table(:users) do
-      modify :currency, :string, default: "USD"
+      modify :currency, :string, default: "PHP"
     end
   end
 end
