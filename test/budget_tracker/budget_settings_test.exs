@@ -11,6 +11,58 @@ defmodule BudgetTracker.BudgetSettingsTest do
 
     @invalid_attrs %{name: nil, category: nil, planned_amount: nil}
 
+    test "valid planned_amount_v2 with currency even with letters" do
+      user = user_fixture()
+      budget_setting = budget_setting_fixture(%{user_id: user.id})
+      attrs = %{"planned_amount_v2" => "₱ 123,412asdfasdf"}
+
+      assert changeset = BudgetSetting.changeset(budget_setting, attrs)
+      assert changeset.valid?
+    end
+
+    test "valid planned_amount_v2 with currency" do
+      user = user_fixture()
+      budget_setting = budget_setting_fixture(%{user_id: user.id})
+      attrs = %{"planned_amount_v2" => "₱ 123,412"}
+
+      assert changeset = BudgetSetting.changeset(budget_setting, attrs)
+      assert changeset.valid?
+    end
+
+    test "invalid planned_amount_v2" do
+      user = user_fixture()
+      budget_setting = budget_setting_fixture(%{user_id: user.id})
+      attrs = %{"planned_amount_v2" => "a"}
+
+      assert changeset = BudgetSetting.changeset(budget_setting, attrs)
+      assert errors_on(changeset).planned_amount_v2 == ["invalid amount"]
+      refute changeset.valid?
+    end
+
+    test "valid planned_amount_v2 -> whole number" do
+      user = user_fixture()
+      budget_setting = budget_setting_fixture(%{user_id: user.id})
+      attrs = %{"planned_amount_v2" => "1000000"}
+
+      changeset = BudgetSetting.changeset(budget_setting, attrs)
+      assert changeset.valid?
+
+      assert {:ok, result} = BudgetTracker.Repo.update(changeset)
+      assert result.planned_amount_v2 == %Money{amount: 100_000_000, currency: :PHP}
+    end
+
+    test "valid planned_amount_v2 -> decimal number" do
+      user = user_fixture()
+      budget_setting = budget_setting_fixture(%{user_id: user.id})
+      attrs = %{"planned_amount_v2" => "10000.00"}
+
+      changeset = BudgetSetting.changeset(budget_setting, attrs)
+      assert changeset.valid?
+
+      assert {:ok, result} = BudgetTracker.Repo.update(changeset)
+      assert result.planned_amount_v2 == %Money{amount: 1_000_000, currency: :PHP}
+    end
+
     test "list_budget_settings/0 returns all budget_settings" do
       user = user_fixture()
       budget_setting = budget_setting_fixture(%{user_id: user.id})
@@ -29,7 +81,7 @@ defmodule BudgetTracker.BudgetSettingsTest do
       valid_attrs = %{
         name: "some name",
         category: :incomes,
-        planned_amount: Money.new(120),
+        planned_amount_v2: 120,
         user_id: user.id
       }
 
@@ -38,7 +90,7 @@ defmodule BudgetTracker.BudgetSettingsTest do
 
       assert budget_setting.name == "some name"
       assert budget_setting.category == :incomes
-      assert budget_setting.planned_amount == %Money{amount: 120, currency: :PHP}
+      assert budget_setting.planned_amount_v2 == %Money{amount: 12000, currency: :PHP}
     end
 
     test "create_budget_setting/1 with invalid data returns error changeset" do
@@ -52,7 +104,7 @@ defmodule BudgetTracker.BudgetSettingsTest do
       update_attrs = %{
         name: "some updated name",
         category: :expenses,
-        planned_amount: Money.new(456)
+        planned_amount_v2: 456
       }
 
       assert {:ok, %BudgetSetting{} = budget_setting} =
@@ -60,7 +112,7 @@ defmodule BudgetTracker.BudgetSettingsTest do
 
       assert budget_setting.name == "some updated name"
       assert budget_setting.category == :expenses
-      assert budget_setting.planned_amount == %Money{amount: 456, currency: :PHP}
+      assert budget_setting.planned_amount_v2 == %Money{amount: 45600, currency: :PHP}
     end
 
     test "update_budget_setting/2 with invalid data returns error changeset" do

@@ -4,9 +4,9 @@ defmodule BudgetTrackerWeb.BudgetSettingLiveTest do
   import Phoenix.LiveViewTest
   import BudgetTracker.BudgetSettingsFixtures
 
-  @create_attrs %{name: "some name", category: :incomes, planned_amount: 120.5}
-  @update_attrs %{name: "some updated name", category: :expenses, planned_amount: 456.7}
-  @invalid_attrs %{name: nil, category: nil, planned_amount: nil}
+  @create_attrs %{name: "some name", category: :incomes, planned_amount_v2: 120.5}
+  @update_attrs %{name: "some updated name", category: :expenses, planned_amount_v2: 456.7}
+  @invalid_attrs %{name: nil, category: nil, planned_amount_v2: nil}
 
   setup [:register_and_log_in_user]
 

@@ -8,16 +8,28 @@ defmodule BudgetTracker.Transactions do
   alias BudgetTracker.Accounts.User
   alias BudgetTracker.Transactions.Transaction
 
+  @spec transfer_amount_v1_to_amount_v2() :: :ok
+  def transfer_amount_v1_to_amount_v2() do
+    Transaction
+    |> from(as: :transactions)
+    |> join(:inner, [transactions: t], u in User, on: u.id == t.user_id, as: :users)
+    |> where([transactions: t], is_nil(t.amount_v2))
+    |> update([users: u, transactions: t],
+      set: [amount_v2: fragment("(?, ?)", t.amount, u.currency)]
+    )
+    |> Repo.update_all([])
+  end
+
   @spec transaction_to_map(Transaction.t()) :: map()
   def transaction_to_map(transaction) do
     %{
       id: transaction.id,
       date: BudgetTrackerWeb.Live.Helpers.format_datetime(transaction.date),
       amount:
-        Money.to_string(transaction.amount, symbol: false)
+        Money.to_string(transaction.amount_v2, symbol: false)
         |> String.replace(",", "")
         |> String.to_integer(),
-      currency: transaction.amount.currency,
+      currency: transaction.amount_v2.currency,
       category: transaction.budget_setting.category,
       color: transaction.budget_setting.color
     }
@@ -32,7 +44,8 @@ defmodule BudgetTracker.Transactions do
     |> where([t], t.user_id == ^user.id)
     |> where([t], fragment("?::date >= date_trunc('month', current_date)", t.date))
     |> where([budget_setting: bs], bs.category == ^category)
-    |> Repo.aggregate(:sum, :amount)
+    |> Repo.all()
+    |> Enum.reduce(Money.new(0, :PHP), fn t, acc -> Money.add(t.amount_v2, acc) end)
   end
 
   @doc """
@@ -42,7 +55,8 @@ defmodule BudgetTracker.Transactions do
   def total_transactions_of_user(user) do
     Transaction
     |> where([t], t.user_id == ^user.id)
-    |> Repo.aggregate(:sum, :amount)
+    |> Repo.all()
+    |> Enum.reduce(Money.new(0, :PHP), fn t, acc -> Money.add(t.amount_v2, acc) end)
   end
 
   @doc """

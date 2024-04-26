@@ -19,7 +19,7 @@
         <%= transaction.budget_setting.name %>
       </.tag>
     </:col>
-    <:col :let={{_id, transaction}} label="Amount"><%= transaction.amount %></:col>
+    <:col :let={{_id, transaction}} label="Amount"><%= transaction.amount_v2 %></:col>
     <:col :let={{_id, transaction}} label="Description"><%= transaction.description %></:col>
     <:action :let={{_id, transaction}}>
       <div class="sr-only">
