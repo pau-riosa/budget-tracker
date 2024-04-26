@@ -31,11 +31,11 @@ defmodule BudgetTracker.Money.Ecto.Composite.Type do
       |> Decimal.to_string()
       |> String.to_integer()
 
-    {:ok, Money.new(new_amount, currency)}
+    {:ok, Money.new(new_amount, currency || :PHP)}
   end
 
   def load({amount, currency}) do
-    {:ok, Money.new(amount, currency)}
+    {:ok, Money.new(amount, currency || :PHP)}
   end
 
   @spec dump(any()) :: :error | {:ok, {integer(), String.t()}}
