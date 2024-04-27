@@ -60,7 +60,8 @@ defmodule BudgetTracker.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
       {:money, "~> 1.12"},
-      {:decimal, "~> 2.0"}
+      {:decimal, "~> 2.0"},
+      {:random_color, "~> 0.1.0"}
     ]
   end
 

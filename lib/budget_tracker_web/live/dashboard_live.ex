@@ -30,14 +30,30 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
         />
         <.total_value_card path={~p"/savings"} title="Total Savings" amount={@savings_total_amount} />
       </div>
-      <div class="mx-auto grid max-w-2xl grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-1">
-        <.async_result :let={transactions} assign={@transaction_list}>
+      <div class="mx-auto grid max-w-2xl items-center grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-1">
+        <.async_result :let={transactions} assign={@overall_transaction_list}>
+          <:loading>Loading Overall Transactions Analytics...</:loading>
+          <:failed>There was an error loading overall transactions analytics...</:failed>
           <div class="w-full">
             <canvas
               phx-hook="BarChart"
               id="overall-transaction-list"
               class="col-span-1"
               data-label="Overall Transactions"
+              data-items={Jason.encode!(transactions)}
+            >
+            </canvas>
+          </div>
+        </.async_result>
+        <.async_result :let={transactions} assign={@transaction_list}>
+          <:loading>Loading Transactions Analytics Category...</:loading>
+          <:failed>There was an error loading transactions analytics by category...</:failed>
+          <div class="w-full flex items-center justify-center">
+            <canvas
+              phx-hook="PieChart"
+              id="pie-chart-overall-transaction-list"
+              class="col-span-1"
+              data-label="Transactions List by Category"
               data-items={Jason.encode!(transactions)}
             >
             </canvas>
@@ -92,6 +108,7 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
     {:noreply,
      socket
      |> assign_async_transaction_list()
+     |> assign_async_overall_transaction_list()
      |> assign_async_incomes_total_amount()
      |> assign_async_expenses_total_amount()
      |> assign_async_debts_total_amount()
@@ -103,6 +120,29 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
     current_user = socket.assigns.current_user
 
     assign_async(socket, :transaction_list, fn ->
+      transactions =
+        current_user
+        |> Transactions.list_transactions_of_user()
+        |> Enum.map(&Transactions.transaction_list_to_map/1)
+        |> Enum.group_by(&Map.get(&1, :category))
+        |> Enum.map(fn {category, transactions} ->
+          Enum.reduce(
+            transactions,
+            %{category: category, amount: 0, color: "#FFFFFF"},
+            fn transaction, acc ->
+              %{acc | amount: acc.amount + transaction.amount, color: transaction.color}
+            end
+          )
+        end)
+
+      {:ok, %{transaction_list: transactions}}
+    end)
+  end
+
+  defp assign_async_overall_transaction_list(socket) do
+    current_user = socket.assigns.current_user
+
+    assign_async(socket, :overall_transaction_list, fn ->
       transactions =
         current_user
         |> Transactions.list_transactions_of_user()
@@ -118,7 +158,7 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
           )
         end)
 
-      {:ok, %{transaction_list: transactions}}
+      {:ok, %{overall_transaction_list: transactions}}
     end)
   end
 
