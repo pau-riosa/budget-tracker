@@ -50,7 +50,7 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
           <:failed>There was an error loading transactions analytics by category...</:failed>
           <div class="w-full flex items-center justify-center h-96">
             <canvas
-              phx-hook="PieChart"
+              phx-hook="HorizontalBarChart"
               id="pie-chart-overall-transaction-list"
               class="col-span-1"
               data-label="Transactions List by Category"

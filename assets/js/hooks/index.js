@@ -1,6 +1,6 @@
-import { BarChart, PieChart } from "./charts";
+import { BarChart, HorizontalBarChart } from "./charts";
 
 export const Hooks = {
   BarChart: BarChart,
-  PieChart: PieChart,
+  HorizontalBarChart: HorizontalBarChart,
 };

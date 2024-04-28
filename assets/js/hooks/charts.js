@@ -2,7 +2,7 @@ import Chart from "chart.js/auto";
 import { transparentize, months, returnMonths } from "./utils";
 const d = new Date();
 let month_name = returnMonths()[d.getMonth()];
-export const PieChart = {
+export const HorizontalBarChart = {
   dataset() {
     return JSON.parse(this.el.dataset.items);
   },
