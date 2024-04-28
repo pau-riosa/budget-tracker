@@ -20,6 +20,21 @@ defmodule BudgetTracker.Transactions do
     |> Repo.update_all([])
   end
 
+  @spec transaction_list_to_map(Transaction.t()) :: map()
+  def transaction_list_to_map(transaction) do
+    %{
+      id: transaction.id,
+      date: BudgetTrackerWeb.Live.Helpers.format_datetime(transaction.date),
+      amount:
+        Money.to_string(transaction.amount_v2, symbol: false)
+        |> String.replace(",", "")
+        |> String.to_integer(),
+      currency: transaction.amount_v2.currency,
+      category: transaction.budget_setting.name,
+      color: transaction.budget_setting.color
+    }
+  end
+
   @spec transaction_to_map(Transaction.t()) :: map()
   def transaction_to_map(transaction) do
     %{

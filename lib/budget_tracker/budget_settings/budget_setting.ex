@@ -30,6 +30,17 @@ defmodule BudgetTracker.BudgetSettings.BudgetSetting do
     ])
     |> validate_required([:category, :name, :user_id, :color])
     |> validate_planned_amount_v2(attrs)
+    |> add_random_color()
+  end
+
+  defp add_random_color(changeset) do
+    case changeset.data do
+      %__MODULE__{color: "#000000"} ->
+        put_change(changeset, :color, RandomColor.rgba([format: :string], 0.5))
+
+      _ ->
+        changeset
+    end
   end
 
   defp validate_planned_amount_v2(changeset, attrs) do
