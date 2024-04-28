@@ -34,7 +34,7 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
         <.async_result :let={transactions} assign={@overall_transaction_list}>
           <:loading>Loading Overall Transactions Analytics...</:loading>
           <:failed>There was an error loading overall transactions analytics...</:failed>
-          <div class="w-full">
+          <div class="w-full h-96">
             <canvas
               phx-hook="BarChart"
               id="overall-transaction-list"
@@ -48,7 +48,7 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
         <.async_result :let={transactions} assign={@transaction_list}>
           <:loading>Loading Transactions Analytics Category...</:loading>
           <:failed>There was an error loading transactions analytics by category...</:failed>
-          <div class="w-full flex items-center justify-center">
+          <div class="w-full flex items-center justify-center h-96">
             <canvas
               phx-hook="PieChart"
               id="pie-chart-overall-transaction-list"

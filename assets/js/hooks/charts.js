@@ -1,5 +1,7 @@
 import Chart from "chart.js/auto";
-import { transparentize } from "./utils";
+import { transparentize, months, returnMonths } from "./utils";
+const d = new Date();
+let month_name = returnMonths()[d.getMonth()];
 export const PieChart = {
   dataset() {
     return JSON.parse(this.el.dataset.items);
@@ -7,22 +9,24 @@ export const PieChart = {
   mounted() {
     const ctx = this.el;
     const data = {
-      type: "pie",
+      type: "bar",
       options: {
+        indexAxis: "y",
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             position: "right",
           },
           title: {
             display: true,
-            text: "Transaction Analytics By Category",
+            text: "Transactions By Category",
           },
         },
       },
       data: {
         // random data to validate chart generation
-        labels: this.dataset().map((item) => item.category),
+        labels: this.dataset().map((item) => item.category.toUpperCase()),
         datasets: [
           {
             label: "Transaction Analytics",
@@ -51,8 +55,8 @@ export const BarChart = {
       borderColor: transparentize(item.color, 0),
       borderWidth: 3,
       backgroundColor: transparentize(item.color, 0.8),
-      label: item.category,
-      data: [{ x: item.category, y: item.amount }],
+      label: item.category.toUpperCase(),
+      data: [{ x: item.category.toUpperCase(), y: item.amount }],
     }));
 
     const ctx = this.el;
@@ -60,20 +64,21 @@ export const BarChart = {
       type: "bar",
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             position: "top",
           },
           title: {
             display: true,
-            text: "Overall Transaction Analytics By Type",
+            text: `Transactions By The Month of ${month_name}`,
           },
         },
       },
       data: {
         // random data to validate chart generation
         //
-        labels: this.dataset().map((item) => item.category),
+        labels: this.dataset().map((item) => item.category.toUpperCase()),
         datasets: list_of_data,
       },
     };

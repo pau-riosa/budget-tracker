@@ -7,8 +7,8 @@
   },
   "dependencies": {
     "@tailwindcss/line-clamp": "^0.4.4",
-    "pkg.json": "^2.0.8",
-    "chart.js": "^4.4.2"
+    "chart.js": "^4.4.2",
+    "pkg.json": "^2.0.8"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
