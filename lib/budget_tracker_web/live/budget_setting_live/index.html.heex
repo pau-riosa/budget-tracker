@@ -8,7 +8,7 @@
     </:actions>
   </.header>
 
-  <.table
+  <.table_with_accordion
     id="budget_settings"
     rows={@streams.budget_settings}
     row_click={
@@ -16,9 +16,9 @@
     }
   >
     <:col :let={{_id, budget_setting}} label="Name">
-      <.tag color={budget_setting.color}>
+      <div class="font-bold">
         <%= budget_setting.name %>
-      </.tag>
+      </div>
     </:col>
     <:col :let={{_id, budget_setting}} label="Category">
       <%= budget_setting.category %>
@@ -26,15 +26,8 @@
     <:col :let={{_id, budget_setting}} label="Type">
       <%= budget_setting.type %>
     </:col>
-
     <:col :let={{_id, budget_setting}} label="Planned amount">
       <%= budget_setting.planned_amount_v2 %>
-    </:col>
-    <:col :let={{_id, budget_setting}} label="Actual amount">
-      <%= Money.new(budget_setting.actual_amount || 0) %>
-    </:col>
-    <:col :let={{_id, budget_setting}} label="Diff">
-      <%= Money.new(budget_setting.diff_amount || 0) %>
     </:col>
     <:action :let={{_id, budget_setting}}>
       <div class="sr-only">
@@ -50,15 +43,19 @@
         Delete
       </.link>
     </:action>
-  </.table>
-  <div class="flex justify-between  py-3">
-    <p class="font-bold text-sm">
-      Total Budget Planned
-    </p>
-    <p class="font-bold text-sm text-red-500">
-      <%= @total_budget %>
-    </p>
-  </div>
+    <:accordion :let={{_id, budget_setting}}>
+      <div class="w-full text-sm ">
+        <h3>budget information</h3>
+        <p><%= budget_setting.id %></p>
+      </div>
+    </:accordion>
+    <:accordion :let={{_id, budget_setting}}>
+      <div class="w-full text-sm ">
+        <h3>budget information</h3>
+        <p><%= budget_setting.id %></p>
+      </div>
+    </:accordion>
+  </.table_with_accordion>
 
   <.modal
     :if={@live_action in [:new, :edit]}
