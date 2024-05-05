@@ -16,7 +16,7 @@
     }
   >
     <:col :let={{_id, budget_setting}} label="Name">
-    <.tag color={budget_setting.color}>
+      <.tag color={budget_setting.color}>
         <%= budget_setting.name %>
       </.tag>
     </:col>
@@ -44,7 +44,14 @@
       </.link>
     </:action>
   </.table_with_accordion>
-
+  <div class="flex justify-between  py-3">
+    <p class="font-bold text-sm">
+      Total Budget Planned
+    </p>
+    <p class="font-bold text-sm text-red-500">
+      <%= @total_budget %>
+    </p>
+  </div>
   <.modal
     :if={@live_action in [:new, :edit]}
     id="budget_setting-modal"
