@@ -489,41 +489,46 @@ defmodule BudgetTrackerWeb.CoreComponents do
 
     assigns =
       assign(assigns,
-        columns: 0..Enum.count(assigns.col) |> Enum.map(fn _ -> "1fr " end) |> Enum.join("")
+        columns: Enum.count(assigns.col) + 1
       )
 
     ~H"""
-    <div class="w-full">
-      <section style={"width: 100%; display: inline-grid; grid-template-rows: auto; grid-template-columns: #{@columns};"}>
-        <p :for={col <- @col} class="w-full text-sm leading-6 text-base-white px-2 font-semibold">
+    <div class="w-full py-10">
+      <section
+        class="table-header border-b border-gray-100 text-zinc-500"
+        style={"width: 100%; display: inline-grid; grid-template-rows: auto; grid-template-columns: repeat(#{@columns}, 1fr);"}
+      >
+        <p
+          :for={col <- @col}
+          class="w-full text-sm leading-6 text-base-white font-semibold p-0 pb-4 pr-6 font-normal"
+        >
           <%= col[:label] %>
         </p>
         <p class="relative p-0 pb-4">
           <span class="sr-only"><%= gettext("Actions") %></span>
         </p>
       </section>
-      <section
-        id={@id}
-        phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
-        phx-viewport-bottom="load-more"
-        phx-page-loading
-        class="w-full flex flex-col justify-evenly items-center"
-      >
-        <div
+      <section id={@id} phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}>
+        <ol
           :for={row <- @rows}
           id={@row_id && @row_id.(row)}
           phx-click={@row_click && @row_click.(row)}
-          class="group w-full flex flex-col cursor-pointer"
+          class="collection-container group w-full flex flex-col cursor-pointer"
         >
-          <div
-            style={"width: 100%; display: inline-grid; grid-template-rows: auto; grid-template-columns: #{@columns};"}
-            class="w-full text-sm leading-6 text-base-white gap-x-1 items-center group-hover:bg-gray-100 px-2"
+          <li
+            class="item item-container w-full text-sm leading-6 text-base-white gap-x-1 items-center group-hover:bg-gray-100"
+            style={"width: 100%; display: inline-grid; grid-template-rows: auto; grid-template-columns: repeat(#{@columns}, 1fr);"}
           >
-            <div :for={col <- @col} class="my-5 py-5">
-              <%= render_slot(col, @row_item.(row)) %>
-            </div>
-            <div :if={@action != []} class="whitespace-nowrap py-4 text-right text-sm font-medium">
-              <span :for={action <- @action} class="font-semibold ml-4 leading-6 text-zinc-900">
+            <section :for={col <- @col} class="attribute-container my-1 py-1">
+              <div class="attribute">
+                <div class="attribute-column font-bold"><%= col[:label] %></div>
+                <div class="attribute-value">
+                  <%= render_slot(col, @row_item.(row)) %>
+                </div>
+              </div>
+            </section>
+            <section :if={@action != []} class="whitespace-nowrap py-4 text-right text-sm font-medium">
+              <span :for={action <- @action} class="font-bold ml-4 leading-6 text-zinc-900">
                 <%= render_slot(action, @row_item.(row)) %>
               </span>
               <span
@@ -541,9 +546,9 @@ defmodule BudgetTrackerWeb.CoreComponents do
                   class="w-5 h-5 rotate-180 transition-transform duration-300 cursor-pointer"
                 />
               </span>
-            </div>
-          </div>
-          <div
+            </section>
+          </li>
+          <li
             :if={@accordion != []}
             id={"#{@row_id && @row_id.(row)}-content"}
             class="group-hover:bg-gray-100 border-b border-gray-300 px-2 w-full hidden flex flex-col gap-2"
@@ -551,8 +556,8 @@ defmodule BudgetTrackerWeb.CoreComponents do
             <div :for={accordion <- @accordion}>
               <%= render_slot(accordion, row) %>
             </div>
-          </div>
-        </div>
+          </li>
+        </ol>
       </section>
     </div>
     """
