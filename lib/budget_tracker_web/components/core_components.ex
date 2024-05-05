@@ -482,18 +482,16 @@ defmodule BudgetTrackerWeb.CoreComponents do
   slot :accordion, doc: "the slot for showing contents in the accordion"
 
   def table_with_accordion(assigns) do
+    action_col_count = if assigns.action != [], do: 1, else: 0
+    assigns = assign(assigns, columns: Enum.count(assigns.col) + action_col_count)
+
     assigns =
       with %{rows: %Phoenix.LiveView.LiveStream{}} <- assigns do
         assign(assigns, row_id: assigns.row_id || fn {id, _item} -> id end)
       end
 
-    assigns =
-      assign(assigns,
-        columns: Enum.count(assigns.col) + 1
-      )
-
     ~H"""
-    <div class="w-full py-10">
+    <div class="w-full">
       <section
         class="table-header border-b border-gray-100 text-zinc-500"
         style={"width: 100%; display: inline-grid; grid-template-rows: auto; grid-template-columns: repeat(#{@columns}, 1fr);"}
