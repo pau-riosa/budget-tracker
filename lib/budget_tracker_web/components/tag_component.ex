@@ -7,7 +7,10 @@ defmodule BudgetTrackerWeb.Components.Tag do
   @spec tag(map()) :: Phoenix.LiveView.Rendered.t()
   def tag(assigns) do
     ~H"""
-    <span class="px-2 py-2 rounded-md text-white font-semibold" style={"background-color: #{@color};"}>
+    <span
+      class="text-center px-2 py-2 rounded-md text-white font-semibold"
+      style={"background-color: #{@color};"}
+    >
       <%= render_slot(@inner_block) %>
     </span>
     """

@@ -8,7 +8,7 @@
     </:actions>
   </.header>
 
-  <.table
+  <.table_with_accordion
     id="transactions"
     rows={@streams.transactions}
     row_click={fn {_id, transaction} -> JS.navigate(~p"/transactions/#{transaction}") end}
@@ -35,7 +35,7 @@
         Delete
       </.link>
     </:action>
-  </.table>
+  </.table_with_accordion>
   <div class="flex justify-between  py-3">
     <p class="font-bold text-sm">
       Total Transactions

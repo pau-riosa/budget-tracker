@@ -16,9 +16,9 @@
     }
   >
     <:col :let={{_id, budget_setting}} label="Name">
-      <div class="font-bold">
+    <.tag color={budget_setting.color}>
         <%= budget_setting.name %>
-      </div>
+      </.tag>
     </:col>
     <:col :let={{_id, budget_setting}} label="Category">
       <%= budget_setting.category %>
@@ -43,12 +43,6 @@
         Delete
       </.link>
     </:action>
-    <:accordion :let={{_id, budget_setting}}>
-      <div class="w-full text-sm ">
-        <h3>budget information</h3>
-        <p><%= budget_setting.id %></p>
-      </div>
-    </:accordion> 
   </.table_with_accordion>
 
   <.modal
