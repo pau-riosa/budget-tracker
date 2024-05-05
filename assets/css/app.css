@@ -8,3 +8,54 @@
   font-family: "Schibsted Grotesk", "Familjen Grotesk", "Nunito", sans-serif;
 }
 /* This file is for your main application CSS */
+
+@media screen and (min-width: 737px) {
+  .container-item-header {
+    display: none !important;
+  }
+
+  .attribute > .attribute-column {
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: 737px) {
+  .table-header {
+    display: none !important;
+  }
+
+  .collection-container {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    padding-bottom: 5px !important;
+  }
+  
+  .attribute-container {
+    display: grid !important;
+    grid-template-columns: 2fr 2fr !important;
+    padding: 0px !important;
+    margin: 0px !important;
+  }
+
+  .attribute > .attribute-column::before {
+    content: attr(data-name);
+    font-weight: bold;
+  }
+  
+  .attribute {
+    display: grid !important;
+    grid-template-columns: 80% 100% !important;
+    width: 100% !important;
+  }
+
+  .item.item-container {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    grid-gap: 5px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 5px !important;
+    padding: 10px !important;
+  }
+}

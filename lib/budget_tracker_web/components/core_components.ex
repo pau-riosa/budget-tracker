@@ -449,6 +449,121 @@ defmodule BudgetTrackerWeb.CoreComponents do
   end
 
   @doc ~S"""
+  Renders a table with accordion 
+
+  ## Examples
+
+        <.table_with_accordion id="users" rows={@users}>
+          <:col :let={user} label="id"/><%= user.id %></:col>
+          <:col :let={user} label="username"/><%= user.username %></:col>
+          <:accordion_content :let={user}>
+            ...customize content here
+          </:accordion_content>
+        </.table_with_accordion>
+
+  """
+  attr(:id, :string, required: true)
+  attr(:rows, :list, required: true)
+  attr(:row_id, :any, default: nil, doc: "the function for generating the row id")
+  attr(:columns, :any, default: nil, doc: "the function for generating the column numbers")
+  attr(:row_click, :any, default: nil, doc: "the function for handling phx-click on each row")
+
+  attr(:row_item, :any,
+    default: &Function.identity/1,
+    doc: "the function for mapping each row before calling the :col and :action slots"
+  )
+
+  slot :col, required: true do
+    attr :label, :string
+  end
+
+  slot :action, doc: "the slot for showing user actions in the last table column"
+
+  slot :accordion, doc: "the slot for showing contents in the accordion"
+
+  def table_with_accordion(assigns) do
+    assigns =
+      with %{rows: %Phoenix.LiveView.LiveStream{}} <- assigns do
+        assign(assigns, row_id: assigns.row_id || fn {id, _item} -> id end)
+      end
+
+    assigns =
+      assign(assigns,
+        columns: Enum.count(assigns.col) + 1
+      )
+
+    ~H"""
+    <div class="w-full py-10">
+      <section
+        class="table-header border-b border-gray-100 text-zinc-500"
+        style={"width: 100%; display: inline-grid; grid-template-rows: auto; grid-template-columns: repeat(#{@columns}, 1fr);"}
+      >
+        <p
+          :for={col <- @col}
+          class="w-full text-sm leading-6 text-base-white font-semibold p-0 pb-4 pr-6 font-normal"
+        >
+          <%= col[:label] %>
+        </p>
+        <p class="relative p-0 pb-4">
+          <span class="sr-only"><%= gettext("Actions") %></span>
+        </p>
+      </section>
+      <section id={@id} phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}>
+        <ol
+          :for={row <- @rows}
+          id={@row_id && @row_id.(row)}
+          phx-click={@row_click && @row_click.(row)}
+          class="collection-container group w-full flex flex-col cursor-pointer"
+        >
+          <li
+            class="item item-container w-full text-sm leading-6 text-base-white gap-x-1 items-center group-hover:bg-gray-100"
+            style={"width: 100%; display: inline-grid; grid-template-rows: auto; grid-template-columns: repeat(#{@columns}, 1fr);"}
+          >
+            <section :for={col <- @col} class="attribute-container my-1 py-1">
+              <div class="attribute">
+                <div class="attribute-column font-bold"><%= col[:label] %></div>
+                <div class="attribute-value">
+                  <%= render_slot(col, @row_item.(row)) %>
+                </div>
+              </div>
+            </section>
+            <section :if={@action != []} class="whitespace-nowrap py-4 text-right text-sm font-medium">
+              <span :for={action <- @action} class="font-bold ml-4 leading-6 text-zinc-900">
+                <%= render_slot(action, @row_item.(row)) %>
+              </span>
+              <span
+                :if={@accordion != []}
+                class="font-semibold ml-4 leading-6 text-zinc-900"
+                phx-click={
+                  %JS{}
+                  |> JS.toggle_class("rotate-180", to: "##{@row_id && @row_id.(row)}-icon")
+                  |> JS.toggle_class("hidden", to: "##{@row_id && @row_id.(row)}-content")
+                }
+              >
+                <.icon
+                  id={"#{@row_id && @row_id.(row)}-icon"}
+                  name="hero-chevron-up-solid"
+                  class="w-5 h-5 rotate-180 transition-transform duration-300 cursor-pointer"
+                />
+              </span>
+            </section>
+          </li>
+          <li
+            :if={@accordion != []}
+            id={"#{@row_id && @row_id.(row)}-content"}
+            class="group-hover:bg-gray-100 border-b border-gray-300 px-2 w-full hidden flex flex-col gap-2"
+          >
+            <div :for={accordion <- @accordion}>
+              <%= render_slot(accordion, row) %>
+            </div>
+          </li>
+        </ol>
+      </section>
+    </div>
+    """
+  end
+
+  @doc ~S"""
   Renders a table with generic styling.
 
   ## Examples
