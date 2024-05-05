@@ -11,6 +11,7 @@ defmodule BudgetTracker.BudgetSettings.BudgetSetting do
     field :planned_amount_v2, BudgetTracker.Money.Ecto.Composite.Type
 
     belongs_to :user, BudgetTracker.Accounts.User
+    has_many(:transactions, BudgetTracker.Transactions.Transaction)
 
     field :actual_amount, Money.Ecto.Amount.Type, virtual: true
     field :diff_amount, Money.Ecto.Amount.Type, virtual: true

@@ -35,6 +35,9 @@ defmodule BudgetTracker.BudgetSettings do
   """
   @spec list_budget_settings_of_user(user :: User.t()) :: list(BudgetSetting.t())
   def list_budget_settings_of_user(user) do
+    transaction_query =
+      from(t in BudgetTracker.Transactions.Transaction, where: t.user_id == ^user.id)
+
     user_id = Ecto.UUID.dump!(user.id)
 
     BudgetSetting
@@ -59,6 +62,7 @@ defmodule BudgetTracker.BudgetSettings do
           ^user_id
         )
     })
+    |> preload(transactions: ^transaction_query)
     |> Repo.all()
   end
 
