@@ -46,23 +46,23 @@
       </:action>
 
       <:accordion :let={{_id, budget_setting}}>
-      <div class="w-full">
-        <p class="w-full tracking-tighter text-zinc-500 text-sm py-2 font-semibold text-center">
-          Transaction Overview for <%= budget_setting.name %>
-        </p>
-        <.table_with_accordion
-          id={"budget-setting-#{budget_setting.id}-transactions"}
-          rows={budget_setting.transactions}
-          row_item={fn transaction -> {transaction.id, transaction} end}
-        >
-          <:col :let={{_id, transaction}} label="Date">
-            <%= format_datetime(transaction.date) %>
-          </:col>
-          <:col :let={{_id, transaction}} label="Amount"><%= transaction.amount_v2 %></:col>
-          <:col :let={{_id, transaction}} label="Description">
-            <%= transaction.description %>
-          </:col>
-        </.table_with_accordion>
+        <div class="w-full">
+          <p class="w-full tracking-tighter text-zinc-500 text-sm py-2 font-semibold text-center">
+            Transaction Overview for <%= budget_setting.name %>
+          </p>
+          <.table_with_accordion
+            id={"budget-setting-#{budget_setting.id}-transactions"}
+            rows={budget_setting.transactions}
+            row_item={fn transaction -> {transaction.id, transaction} end}
+          >
+            <:col :let={{_id, transaction}} label="Date">
+              <%= format_datetime(transaction.date) %>
+            </:col>
+            <:col :let={{_id, transaction}} label="Amount"><%= transaction.amount_v2 %></:col>
+            <:col :let={{_id, transaction}} label="Description">
+              <%= transaction.description %>
+            </:col>
+          </.table_with_accordion>
         </div>
       </:accordion>
     </.table_with_accordion>

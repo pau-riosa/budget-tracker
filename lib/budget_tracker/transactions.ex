@@ -8,6 +8,8 @@ defmodule BudgetTracker.Transactions do
   alias BudgetTracker.Accounts.User
   alias BudgetTracker.Transactions.Transaction
 
+  @budget_categories Ecto.Enum.values(BudgetTracker.BudgetSettings.BudgetSetting, :category)
+
   @spec transfer_amount_v1_to_amount_v2() :: :ok
   def transfer_amount_v1_to_amount_v2() do
     Transaction
@@ -20,34 +22,36 @@ defmodule BudgetTracker.Transactions do
     |> Repo.update_all([])
   end
 
-  @spec transaction_list_to_map(Transaction.t()) :: map()
-  def transaction_list_to_map(transaction) do
+  @doc """
+  Transforms a Transaction struct into a map.
+  """
+  @spec transaction_to_map(Transaction.t(), type :: atom()) :: map()
+  def transaction_to_map(_transaction, _type \\ :incomes)
+
+  def transaction_to_map(transaction, type) when type in @budget_categories do
     %{
       id: transaction.id,
       date: BudgetTrackerWeb.Live.Helpers.format_datetime(transaction.date),
-      amount:
-        Money.to_string(transaction.amount_v2, symbol: false)
-        |> String.replace(",", "")
-        |> String.to_integer(),
+      amount: transaction.amount_v2,
+      currency: transaction.amount_v2.currency,
+      category: transaction.budget_setting.category,
+      color: transaction.budget_setting.color
+    }
+  end
+
+  def transaction_to_map(transaction, type) when type == :budget_name do
+    %{
+      id: transaction.id,
+      date: BudgetTrackerWeb.Live.Helpers.format_datetime(transaction.date),
+      amount: transaction.amount_v2,
       currency: transaction.amount_v2.currency,
       category: transaction.budget_setting.name,
       color: transaction.budget_setting.color
     }
   end
 
-  @spec transaction_to_map(Transaction.t()) :: map()
-  def transaction_to_map(transaction) do
-    %{
-      id: transaction.id,
-      date: BudgetTrackerWeb.Live.Helpers.format_datetime(transaction.date),
-      amount:
-        Money.to_string(transaction.amount_v2, symbol: false)
-        |> String.replace(",", "")
-        |> String.to_integer(),
-      currency: transaction.amount_v2.currency,
-      category: transaction.budget_setting.category,
-      color: transaction.budget_setting.color
-    }
+  def transaction_to_map(transaction, _type) do
+    raise "Invalid budget type used between #{inspect(@budget_type ++ [:budget_name])}"
   end
 
   @doc """
