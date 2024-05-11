@@ -10,6 +10,64 @@ defmodule BudgetTracker.TransactionsTest do
     import BudgetTracker.BudgetSettingsFixtures
     import BudgetTracker.TransactionsFixtures
 
+    test "transaction_to_map/2 does not accept other values between the budget-categories and name" do
+      user = user_fixture()
+
+      budget_setting =
+        budget_setting_fixture(%{name: "car", user_id: user.id, category: :incomes})
+
+      transaction =
+        transaction_fixture(%{
+          user_id: user.id,
+          budget_setting_id: budget_setting.id,
+          amount_v2: "₱ 123,412.92"
+        })
+
+      updated_transaction = Repo.preload(transaction, :budget_setting)
+
+      assert_raise(ArgumentError, fn ->
+        Transactions.transaction_to_map(updated_transaction, :wrong)
+      end)
+    end
+
+    test "transaction_to_map/2 accepts :budget_name" do
+      user = user_fixture()
+
+      budget_setting =
+        budget_setting_fixture(%{name: "car", user_id: user.id, category: :incomes})
+
+      transaction =
+        transaction_fixture(%{
+          user_id: user.id,
+          budget_setting_id: budget_setting.id,
+          amount_v2: "₱ 123,412.92"
+        })
+
+      updated_transaction = Repo.preload(transaction, :budget_setting)
+
+      assert %{
+               category: "car"
+             } = Transactions.transaction_to_map(updated_transaction, :budget_name)
+    end
+
+    test "transaction_to_map/2 defaults to budget-setting.category" do
+      user = user_fixture()
+      budget_setting = budget_setting_fixture(%{user_id: user.id, category: :incomes})
+
+      transaction =
+        transaction_fixture(%{
+          user_id: user.id,
+          budget_setting_id: budget_setting.id,
+          amount_v2: "₱ 123,412.92"
+        })
+
+      updated_transaction = Repo.preload(transaction, :budget_setting)
+
+      assert %{
+               category: :incomes
+             } = Transactions.transaction_to_map(updated_transaction)
+    end
+
     @invalid_attrs %{date: nil, description: nil, amount: nil}
     test "valid amount_v2 with letters" do
       user = user_fixture()

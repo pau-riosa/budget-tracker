@@ -6,8 +6,12 @@ export const HorizontalBarChart = {
   dataset() {
     return JSON.parse(this.el.dataset.items);
   },
+  datatitle() {
+    return this.el.dataset.title;
+  },
   mounted() {
     const ctx = this.el;
+    console.log(this.dataset());
     const data = {
       type: "bar",
       options: {
@@ -16,11 +20,12 @@ export const HorizontalBarChart = {
         maintainAspectRatio: false,
         plugins: {
           legend: {
+            display: false,
             position: "right",
           },
           title: {
             display: true,
-            text: "Transactions By Category",
+            text: this.datatitle(),
           },
         },
       },
@@ -29,7 +34,6 @@ export const HorizontalBarChart = {
         labels: this.dataset().map((item) => item.category.toUpperCase()),
         datasets: [
           {
-            label: "Transaction Analytics",
             data: this.dataset().map((item) => item.amount),
             backgroundColor: this.dataset().map((item) =>
               transparentize(item.color, 0.8),
@@ -49,6 +53,9 @@ export const HorizontalBarChart = {
 export const BarChart = {
   dataset() {
     return JSON.parse(this.el.dataset.items);
+  },
+  datatitle() {
+    return this.el.dataset.title;
   },
   mounted() {
     let list_of_data = this.dataset().map((item) => ({
@@ -71,7 +78,7 @@ export const BarChart = {
           },
           title: {
             display: true,
-            text: `Transactions By The Month of ${month_name}`,
+            text: this.datatitle(),
           },
         },
       },

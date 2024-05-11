@@ -39,7 +39,7 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
               phx-hook="BarChart"
               id="overall-transaction-list"
               class="col-span-1"
-              data-label="Overall Transactions"
+              data-title="Overall Transactions by Type"
               data-items={Jason.encode!(transactions)}
             >
             </canvas>
@@ -53,7 +53,7 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
               phx-hook="HorizontalBarChart"
               id="pie-chart-overall-transaction-list"
               class="col-span-1"
-              data-label="Transactions List by Category"
+              data-title="Overall Transactions by Category"
               data-items={Jason.encode!(transactions)}
             >
             </canvas>
@@ -108,7 +108,7 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
     {:noreply,
      socket
      |> assign_async_transaction_list()
-     |> assign_async_overall_transaction_list()
+     |> assign_async_overall_transaction_list_by_category()
      |> assign_async_incomes_total_amount()
      |> assign_async_expenses_total_amount()
      |> assign_async_debts_total_amount()
@@ -123,23 +123,15 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
       transactions =
         current_user
         |> Transactions.list_transactions_of_user()
-        |> Enum.map(&Transactions.transaction_list_to_map/1)
+        |> Enum.map(&Transactions.transaction_to_map(&1, :budget_name))
         |> Enum.group_by(&Map.get(&1, :category))
-        |> Enum.map(fn {category, transactions} ->
-          Enum.reduce(
-            transactions,
-            %{category: category, amount: 0, color: "#FFFFFF"},
-            fn transaction, acc ->
-              %{acc | amount: acc.amount + transaction.amount, color: transaction.color}
-            end
-          )
-        end)
+        |> transform_transactions()
 
       {:ok, %{transaction_list: transactions}}
     end)
   end
 
-  defp assign_async_overall_transaction_list(socket) do
+  defp assign_async_overall_transaction_list_by_category(socket) do
     current_user = socket.assigns.current_user
 
     assign_async(socket, :overall_transaction_list, fn ->
@@ -148,18 +140,28 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
         |> Transactions.list_transactions_of_user()
         |> Enum.map(&Transactions.transaction_to_map/1)
         |> Enum.group_by(&Map.get(&1, :category))
-        |> Enum.map(fn {category, transactions} ->
-          Enum.reduce(
-            transactions,
-            %{category: category, amount: 0, color: "#FFFFFF"},
-            fn transaction, acc ->
-              %{acc | amount: acc.amount + transaction.amount, color: transaction.color}
-            end
-          )
-        end)
+        |> transform_transactions()
 
       {:ok, %{overall_transaction_list: transactions}}
     end)
+  end
+
+  defp transform_transactions(transactions) do
+    transactions
+    |> Stream.map(fn {category, transactions} ->
+      Enum.reduce(
+        transactions,
+        %{category: category, amount: Money.new(0, :PHP), color: "#FFFFFF"},
+        fn transaction, acc ->
+          result = Money.add(acc.amount, transaction.amount)
+          %{acc | amount: result, color: transaction.color}
+        end
+      )
+    end)
+    |> Stream.map(fn transaction ->
+      %{transaction | amount: transaction.amount.amount}
+    end)
+    |> Enum.to_list()
   end
 
   defp assign_async_incomes_total_amount(socket) do
