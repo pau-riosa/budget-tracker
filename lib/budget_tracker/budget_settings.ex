@@ -27,7 +27,7 @@ defmodule BudgetTracker.BudgetSettings do
   def total_budget_of_user(user) do
     BudgetSetting
     |> where(user_id: ^user.id)
-    |> Repo.aggregate(:sum, :planned_amount)
+    |> Repo.aggregate(:sum, :planned_amount_v2)
   end
 
   @doc """
@@ -47,7 +47,7 @@ defmodule BudgetTracker.BudgetSettings do
       actual_amount:
         fragment(
           """
-            (SELECT sum(amount) FROM transactions WHERE budget_setting_id = ? AND user_id = ?)
+            (SELECT sum(amount_v2::money_with_currency) FROM transactions WHERE budget_setting_id = ? AND user_id = ?)
           """,
           b.id,
           ^user_id
@@ -55,9 +55,9 @@ defmodule BudgetTracker.BudgetSettings do
       diff_amount:
         fragment(
           """
-            (SELECT abs(?::integer - sum(amount)::integer) FROM transactions WHERE budget_setting_id = ? AND user_id = ?)
+            (SELECT subtract(?::money_with_currency, sum(amount_v2::money_with_currency)) FROM transactions WHERE budget_setting_id = ? AND user_id = ?)
           """,
-          b.planned_amount,
+          b.planned_amount_v2,
           b.id,
           ^user_id
         )
