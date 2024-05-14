@@ -30,12 +30,6 @@
       <:col :let={{_id, budget_setting}} label="Planned amount">
         <%= budget_setting.planned_amount_v2 %>
       </:col>
-      <:col :let={{_id, budget_setting}} label="Diff amount">
-        <%= transform_diff_amount(budget_setting.diff_amount) %>
-      </:col>
-      <:col :let={{_id, budget_setting}} label="Actual amount">
-        <%= transform_diff_amount(budget_setting.actual_amount) %>
-      </:col>
       <:action :let={{_id, budget_setting}}>
         <div class="sr-only">
           <.link navigate={~p"/budget_settings/#{budget_setting}"}>Show</.link>
