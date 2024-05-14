@@ -1,4 +1,4 @@
-defmodule BudgetTracker.Repo.Migrations.SetDefaultCurrency do
+defmodule BudgetTracker.Repo.Migrations.SetDefaultCurrency2 do
   use Ecto.Migration
 
   import Ecto.Query
@@ -34,11 +34,11 @@ defmodule BudgetTracker.Repo.Migrations.SetDefaultCurrency do
     end)
   end
 
-  defp set_currency(%{currency: currency} = struct) when currency == "" or is_nil(currency) do
+  defp set_currency(%{currency: currency}) when currency == "" or is_nil(currency) do
     "PHP"
   end
 
-  defp set_currency(%{currency: currency} = struct) do
+  defp set_currency(%{currency: currency}) do
     currency
   end
 end
