@@ -1,5 +1,6 @@
-defmodule BudgetTracker.Repo.Migrations.SetDefaultCurrencyCode do
+defmodule BudgetTracker.Repo.Migrations.SetDefaultCurrency do
   use Ecto.Migration
+
   import Ecto.Query
   alias BudgetTracker.BudgetSettings.BudgetSetting
   alias BudgetTracker.Repo
