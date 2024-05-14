@@ -14,7 +14,10 @@ defmodule BudgetTracker.Repo.Migrations.SetDefaultCurrencyCode do
     |> Enum.each(fn budget_setting ->
       Repo.update!(budget_setting, %{
         planned_amount_v2:
-          Money.new(budget_setting.planned_amount_v2.amount, budget_setting.user.currency)
+          Money.new(
+            budget_setting.planned_amount_v2.amount,
+            budget_setting.user.currency || "PHP"
+          )
       })
     end)
 
@@ -25,7 +28,7 @@ defmodule BudgetTracker.Repo.Migrations.SetDefaultCurrencyCode do
     |> Enum.filter(fn transaction -> is_nil(transaction.amount_v2.currency) end)
     |> Enum.each(fn transaction ->
       Repo.update!(transaction, %{
-        amount_v2: Money.new(transaction.amount_v2.amount, transaction.user.currency)
+        amount_v2: Money.new(transaction.amount_v2.amount, transaction.user.currency || "PHP")
       })
     end)
   end
