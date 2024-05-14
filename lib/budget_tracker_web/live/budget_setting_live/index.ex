@@ -43,7 +43,8 @@ defmodule BudgetTrackerWeb.BudgetSettingLive.Index do
         {BudgetTrackerWeb.BudgetSettingLive.FormComponent, {:saved, budget_setting}},
         socket
       ) do
-    {:noreply, stream_insert(socket, :budget_settings, budget_setting)}
+    updated_budget_setting = BudgetTracker.Repo.preload(budget_setting, :transactions)
+    {:noreply, stream_insert(socket, :budget_settings, updated_budget_setting)}
   end
 
   @impl true
@@ -52,5 +53,14 @@ defmodule BudgetTrackerWeb.BudgetSettingLive.Index do
     {:ok, _} = BudgetSettings.delete_budget_setting(budget_setting)
 
     {:noreply, stream_delete(socket, :budget_settings, budget_setting)}
+  end
+
+  defp transform_diff_amount(nil), do: Money.new(0)
+
+  defp transform_diff_amount({amount, currency}) do
+    amount
+    |> Decimal.to_string()
+    |> String.to_integer()
+    |> Money.new(currency)
   end
 end
