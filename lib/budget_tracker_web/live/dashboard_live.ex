@@ -8,7 +8,7 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
     ~H"""
     <div class="mx-auto max-w-7xl space-y-5 px-4 sm:px-6 lg:px-8 mt-3">
       <.header>
-        <h1 class="font-semibold">Dashboard</h1>
+        <%= BudgetTrackerWeb.Live.Helpers.format_month_year(DateTime.utc_now()) %>
         <:actions>
           <.link patch={~p"/transactions/new"}>
             <.button>New Transaction</.button>

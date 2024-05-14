@@ -61,8 +61,10 @@ defmodule BudgetTracker.Transactions do
     Transaction
     |> join(:inner, [t], bs in assoc(t, :budget_setting), as: :budget_setting)
     |> where([t], t.user_id == ^user.id)
+    |> where([t], fragment("?::date >= date_trunc('month', current_date)", t.date))
     |> where([budget_setting: bs], bs.category == ^category)
-    |> Repo.aggregate(:sum, :amount_v2)
+    |> Repo.all()
+    |> Enum.reduce(Money.new(0, :PHP), fn t, acc -> Money.add(t.amount_v2, acc) end)
   end
 
   @doc """
@@ -72,7 +74,8 @@ defmodule BudgetTracker.Transactions do
   def total_transactions_of_user(user) do
     Transaction
     |> where([t], t.user_id == ^user.id)
-    |> Repo.aggregate(:sum, :amount_v2)
+    |> Repo.all()
+    |> Enum.reduce(Money.new(0, :PHP), fn t, acc -> Money.add(t.amount_v2, acc) end)
   end
 
   @doc """
