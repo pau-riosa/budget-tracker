@@ -66,6 +66,13 @@ defmodule BudgetTracker.BudgetSettings do
     |> Repo.all()
   end
 
+  @spec get_uncategorized_budget_setting(User.t()) :: Money.t() | nil
+  def get_uncategorized_budget_setting(user) do
+    BudgetTracker.Transactions.Transaction
+    |> where([t], t.user_id == ^user.id and is_nil(t.budget_setting_id))
+    |> Repo.aggregate(:sum, :amount_v2)
+  end
+
   @doc """
   Returns the list of budget_settings.
 
