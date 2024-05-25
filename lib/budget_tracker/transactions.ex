@@ -28,6 +28,17 @@ defmodule BudgetTracker.Transactions do
   @spec transaction_to_map(Transaction.t(), type :: atom()) :: map()
   def transaction_to_map(_transaction, _type \\ :incomes)
 
+  def transaction_to_map(%{budget_setting: nil} = transaction, type) do
+    %{
+      id: transaction.id,
+      date: BudgetTrackerWeb.Live.Helpers.format_datetime(transaction.date),
+      amount: transaction.amount_v2,
+      currency: transaction.amount_v2.currency,
+      category: "uncategorized",
+      color: "#D3D3D3"
+    }
+  end
+
   def transaction_to_map(transaction, type) when type in @budget_categories do
     %{
       id: transaction.id,

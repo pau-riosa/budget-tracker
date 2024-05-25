@@ -159,7 +159,7 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
       )
     end)
     |> Stream.map(fn transaction ->
-      %{transaction | amount: transaction.amount.amount}
+      %{transaction | amount: Money.to_decimal(transaction.amount)}
     end)
     |> Enum.to_list()
   end

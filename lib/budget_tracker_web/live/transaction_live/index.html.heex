@@ -14,8 +14,11 @@
     row_click={fn {_id, transaction} -> JS.navigate(~p"/transactions/#{transaction}") end}
   >
     <:col :let={{_id, transaction}} label="Category">
-      <.tag color={transaction.budget_setting.color}>
+      <.tag :if={transaction.budget_setting} color={transaction.budget_setting.color}>
         <%= transaction.budget_setting.name %>
+      </.tag>
+      <.tag :if={!transaction.budget_setting} color="#D3D3D3">
+        Uncategorized
       </.tag>
     </:col>
     <:col :let={{_id, transaction}} label="Date"><%= format_datetime(transaction.date) %></:col>

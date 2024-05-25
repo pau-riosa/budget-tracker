@@ -16,7 +16,7 @@ defmodule BudgetTracker.Transactions.Transaction do
   def changeset(transaction, attrs) do
     transaction
     |> cast(attrs, [:date, :description, :budget_setting_id, :user_id])
-    |> validate_required([:date, :description, :budget_setting_id, :user_id])
+    |> validate_required([:date, :description, :user_id])
     |> validate_amount_v2(attrs)
   end
 
