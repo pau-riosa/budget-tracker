@@ -28,7 +28,7 @@ defmodule BudgetTracker.Transactions do
   @spec transaction_to_map(Transaction.t(), type :: atom()) :: map()
   def transaction_to_map(_transaction, _type \\ :incomes)
 
-  def transaction_to_map(%{budget_setting: nil} = transaction, type) do
+  def transaction_to_map(%{budget_setting: nil} = transaction, _type) do
     %{
       id: transaction.id,
       date: BudgetTrackerWeb.Live.Helpers.format_datetime(transaction.date),
@@ -61,8 +61,8 @@ defmodule BudgetTracker.Transactions do
     }
   end
 
-  def transaction_to_map(transaction, _type) do
-    raise "Invalid budget type used between #{inspect(@budget_type ++ [:budget_name])}"
+  def transaction_to_map(_transaction, _type) do
+    raise "Invalid budget type used between #{inspect(@budget_categories ++ [:budget_name])}"
   end
 
   @doc """
