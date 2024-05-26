@@ -3,6 +3,7 @@ defmodule BudgetTrackerWeb.BudgetSettingLive.Index do
 
   alias BudgetTracker.BudgetSettings
   alias BudgetTracker.BudgetSettings.BudgetSetting
+  alias BudgetTracker.Repo
 
   @impl true
   def mount(_params, _session, socket) do
@@ -43,8 +44,8 @@ defmodule BudgetTrackerWeb.BudgetSettingLive.Index do
         {BudgetTrackerWeb.BudgetSettingLive.FormComponent, {:saved, budget_setting}},
         socket
       ) do
-    updated_budget_setting = BudgetTracker.Repo.preload(budget_setting, :transactions)
-    {:noreply, stream_insert(socket, :budget_settings, updated_budget_setting)}
+    {:noreply,
+     stream_insert(socket, :budget_settings, Repo.preload(budget_setting, :transactions), at: 0)}
   end
 
   @impl true

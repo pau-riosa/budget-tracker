@@ -42,7 +42,6 @@ defmodule BudgetTracker.BudgetSettings do
 
     BudgetSetting
     |> where(user_id: ^user.id)
-    |> order_by(asc: :inserted_at)
     |> select_merge([b], %{
       actual_amount:
         fragment(
@@ -63,6 +62,7 @@ defmodule BudgetTracker.BudgetSettings do
         )
     })
     |> preload(transactions: ^transaction_query)
+    |> order_by(desc: :inserted_at)
     |> Repo.all()
   end
 

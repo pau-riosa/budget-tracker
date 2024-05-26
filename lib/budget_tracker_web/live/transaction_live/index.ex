@@ -48,7 +48,8 @@ defmodule BudgetTrackerWeb.TransactionLive.Index do
 
   @impl true
   def handle_info({BudgetTrackerWeb.TransactionLive.FormComponent, {:saved, transaction}}, socket) do
-    {:noreply, stream_insert(socket, :transactions, Repo.preload(transaction, :budget_setting))}
+    {:noreply,
+     stream_insert(socket, :transactions, Repo.preload(transaction, :budget_setting), at: 0)}
   end
 
   @impl true
