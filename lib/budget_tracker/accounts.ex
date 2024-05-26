@@ -133,12 +133,27 @@ defmodule BudgetTracker.Accounts do
   end
 
   @doc """
-  Updates the user currency. 
+  Updates the user currency.
+
+  Updates the transactions and budget_settings currency as well.
   """
   def update_currency(user, attrs) do
-    user
-    |> User.currency_changeset(attrs)
-    |> Repo.update()
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:user, User.currency_changeset(user, attrs))
+    |> Ecto.Multi.run(:update_budget_settings, fn _repo, %{user: user} ->
+      {:ok, BudgetTracker.BudgetSettings.update_currency(user)}
+    end)
+    |> Ecto.Multi.run(:update_transactions, fn _repo, %{user: user} ->
+      {:ok, BudgetTracker.Transactions.update_currency(user)}
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{user: user}} ->
+        {:ok, user}
+
+      {:error, _, changeset, _} ->
+        {:error, changeset}
+    end
   end
 
   @doc """

@@ -4,7 +4,49 @@ defmodule BudgetTracker.AccountsTest do
   alias BudgetTracker.Accounts
 
   import BudgetTracker.AccountsFixtures
+  import BudgetTracker.BudgetSettingsFixtures
+  import BudgetTracker.TransactionsFixtures
   alias BudgetTracker.Accounts.{User, UserToken}
+
+  describe "update_currency/2" do
+    test "updates the currency for the given user" do
+      user = user_fixture(%{currency: "PHP"})
+
+      budget_setting =
+        budget_setting_fixture(%{
+          user_id: user.id,
+          planned_amount_v2: 100_000_000,
+          currency: user.currency
+        })
+
+      transaction =
+        transaction_fixture(%{
+          user_id: user.id,
+          budget_setting_id: budget_setting.id,
+          amount_v2: 100_000_000,
+          currency: user.currency
+        })
+
+      assert {:ok, updated_user} = Accounts.update_currency(user, %{"currency" => "USD"})
+      assert updated_user.currency == "USD"
+      updated_budget_setting = Repo.reload(budget_setting)
+      updated_transaction = Repo.reload(transaction)
+
+      # with the same amount
+      assert budget_setting.planned_amount_v2.amount ==
+               updated_budget_setting.planned_amount_v2.amount
+
+      assert updated_transaction.amount_v2.amount ==
+               transaction.amount_v2.amount
+
+      # with different currency
+      assert budget_setting.planned_amount_v2.currency !=
+               updated_budget_setting.planned_amount_v2.currency
+
+      assert updated_transaction.amount_v2.currency !=
+               transaction.amount_v2.currency
+    end
+  end
 
   describe "get_user_by_email/1" do
     test "does not return the user if the email does not exist" do

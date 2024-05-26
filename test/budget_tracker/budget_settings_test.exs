@@ -32,7 +32,7 @@ defmodule BudgetTracker.BudgetSettingsTest do
     test "invalid planned_amount_v2" do
       user = user_fixture()
       budget_setting = budget_setting_fixture(%{user_id: user.id})
-      attrs = %{"planned_amount_v2" => "a"}
+      attrs = %{"planned_amount_v2" => "a", "currency" => user.currency}
 
       assert changeset = BudgetSetting.changeset(budget_setting, attrs)
       assert errors_on(changeset).planned_amount_v2 == ["invalid amount"]
@@ -42,7 +42,7 @@ defmodule BudgetTracker.BudgetSettingsTest do
     test "valid planned_amount_v2 -> whole number" do
       user = user_fixture()
       budget_setting = budget_setting_fixture(%{user_id: user.id})
-      attrs = %{"planned_amount_v2" => "1000000"}
+      attrs = %{"planned_amount_v2" => "1000000", "currency" => user.currency}
 
       changeset = BudgetSetting.changeset(budget_setting, attrs)
       assert changeset.valid?
@@ -54,7 +54,7 @@ defmodule BudgetTracker.BudgetSettingsTest do
     test "valid planned_amount_v2 -> decimal number" do
       user = user_fixture()
       budget_setting = budget_setting_fixture(%{user_id: user.id})
-      attrs = %{"planned_amount_v2" => "10000.00"}
+      attrs = %{"planned_amount_v2" => "10000.00", "currency" => user.currency}
 
       changeset = BudgetSetting.changeset(budget_setting, attrs)
       assert changeset.valid?
@@ -82,7 +82,8 @@ defmodule BudgetTracker.BudgetSettingsTest do
         name: "some name",
         category: :incomes,
         planned_amount_v2: 120,
-        user_id: user.id
+        user_id: user.id,
+        currency: user.currency
       }
 
       assert {:ok, %BudgetSetting{} = budget_setting} =
@@ -99,20 +100,21 @@ defmodule BudgetTracker.BudgetSettingsTest do
 
     test "update_budget_setting/2 with valid data updates the budget_setting" do
       user = user_fixture()
-      budget_setting = budget_setting_fixture(%{user_id: user.id})
+      budget_setting = budget_setting_fixture(%{user_id: user.id, currency: user.currency})
 
       update_attrs = %{
         name: "some updated name",
         category: :expenses,
-        planned_amount_v2: 456
+        planned_amount_v2: 456,
+        currency: user.currency
       }
 
-      assert {:ok, %BudgetSetting{} = budget_setting} =
+      assert {:ok, %BudgetSetting{} = update_budget_setting} =
                BudgetSettings.update_budget_setting(budget_setting, update_attrs)
 
-      assert budget_setting.name == "some updated name"
-      assert budget_setting.category == :expenses
-      assert budget_setting.planned_amount_v2 == %Money{amount: 45600, currency: :PHP}
+      assert update_budget_setting.name == "some updated name"
+      assert update_budget_setting.category == :expenses
+      assert update_budget_setting.planned_amount_v2 == %Money{amount: 45600, currency: :PHP}
     end
 
     test "update_budget_setting/2 with invalid data returns error changeset" do

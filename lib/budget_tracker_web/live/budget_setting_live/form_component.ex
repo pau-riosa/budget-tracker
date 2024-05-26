@@ -37,6 +37,8 @@ defmodule BudgetTrackerWeb.BudgetSettingLive.FormComponent do
         <.input field={@form[:name]} type="text" label="Name" />
         <.input field={@form[:planned_amount_v2]} type="text" label="Planned amount" step="0.01" />
         <.input field={@form[:user_id]} type="hidden" value={@current_user.id} />
+        <.input field={@form[:currency]} type="hidden" value={@current_user.currency} />
+
         <:actions>
           <.button phx-disable-with="Saving...">Save Budget setting</.button>
         </:actions>

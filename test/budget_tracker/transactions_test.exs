@@ -25,7 +25,7 @@ defmodule BudgetTracker.TransactionsTest do
 
       updated_transaction = Repo.preload(transaction, :budget_setting)
 
-      assert_raise(ArgumentError, fn ->
+      assert_raise(RuntimeError, fn ->
         Transactions.transaction_to_map(updated_transaction, :wrong)
       end)
     end
@@ -40,7 +40,8 @@ defmodule BudgetTracker.TransactionsTest do
         transaction_fixture(%{
           user_id: user.id,
           budget_setting_id: budget_setting.id,
-          amount_v2: "₱ 123,412.92"
+          amount_v2: "₱ 123,412.92",
+          currency: user.currency
         })
 
       updated_transaction = Repo.preload(transaction, :budget_setting)
@@ -58,7 +59,8 @@ defmodule BudgetTracker.TransactionsTest do
         transaction_fixture(%{
           user_id: user.id,
           budget_setting_id: budget_setting.id,
-          amount_v2: "₱ 123,412.92"
+          amount_v2: "₱ 123,412.92",
+          currency: user.currency
         })
 
       updated_transaction = Repo.preload(transaction, :budget_setting)
@@ -73,7 +75,7 @@ defmodule BudgetTracker.TransactionsTest do
       user = user_fixture()
       budget_setting = budget_setting_fixture(%{user_id: user.id})
       transaction = transaction_fixture(%{user_id: user.id, budget_setting_id: budget_setting.id})
-      attrs = %{"amount_v2" => "₱ 123,412asdfasdf"}
+      attrs = %{"amount_v2" => "₱ 123,412asdfasdf", "currency" => user.currency}
       changeset = Transaction.changeset(transaction, attrs)
       assert changeset.valid?
     end
@@ -82,7 +84,7 @@ defmodule BudgetTracker.TransactionsTest do
       user = user_fixture()
       budget_setting = budget_setting_fixture(%{user_id: user.id})
       transaction = transaction_fixture(%{user_id: user.id, budget_setting_id: budget_setting.id})
-      attrs = %{"amount_v2" => "₱ 123,412"}
+      attrs = %{"amount_v2" => "₱ 123,412", "currency" => user.currency}
       changeset = Transaction.changeset(transaction, attrs)
       assert changeset.valid?
     end
@@ -91,7 +93,7 @@ defmodule BudgetTracker.TransactionsTest do
       user = user_fixture()
       budget_setting = budget_setting_fixture(%{user_id: user.id})
       transaction = transaction_fixture(%{user_id: user.id, budget_setting_id: budget_setting.id})
-      attrs = %{"amount_v2" => "hello world"}
+      attrs = %{"amount_v2" => "hello world", "currency" => user.currency}
 
       changeset = Transaction.changeset(transaction, attrs)
 
@@ -103,7 +105,7 @@ defmodule BudgetTracker.TransactionsTest do
       user = user_fixture()
       budget_setting = budget_setting_fixture(%{user_id: user.id})
       transaction = transaction_fixture(%{user_id: user.id, budget_setting_id: budget_setting.id})
-      attrs = %{"amount_v2" => "1000000"}
+      attrs = %{"amount_v2" => "1000000", "currency" => user.currency}
 
       changeset = Transaction.changeset(transaction, attrs)
       assert changeset.valid?
@@ -116,7 +118,7 @@ defmodule BudgetTracker.TransactionsTest do
       user = user_fixture()
       budget_setting = budget_setting_fixture(%{user_id: user.id})
       transaction = transaction_fixture(%{user_id: user.id, budget_setting_id: budget_setting.id})
-      attrs = %{"amount_v2" => "10000.00"}
+      attrs = %{"amount_v2" => "10000.00", "currency" => user.currency}
 
       changeset = Transaction.changeset(transaction, attrs)
       assert changeset.valid?
@@ -148,7 +150,8 @@ defmodule BudgetTracker.TransactionsTest do
         description: "some description",
         amount_v2: 42,
         user_id: user.id,
-        budget_setting_id: budget_setting.id
+        budget_setting_id: budget_setting.id,
+        currency: user.currency
       }
 
       assert {:ok, %Transaction{} = transaction} = Transactions.create_transaction(valid_attrs)
@@ -169,7 +172,8 @@ defmodule BudgetTracker.TransactionsTest do
       update_attrs = %{
         date: ~U[2024-04-12 23:04:00Z],
         description: "some updated description",
-        amount_v2: 43
+        amount_v2: 43,
+        currency: user.currency
       }
 
       assert {:ok, %Transaction{} = transaction} =

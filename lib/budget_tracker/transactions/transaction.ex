@@ -9,13 +9,14 @@ defmodule BudgetTracker.Transactions.Transaction do
     belongs_to :budget_setting, BudgetTracker.BudgetSettings.BudgetSetting
     belongs_to :user, BudgetTracker.Accounts.User
 
+    field :currency, :string, virtual: true
     timestamps(type: :utc_datetime)
   end
 
   @doc false
   def changeset(transaction, attrs) do
     transaction
-    |> cast(attrs, [:date, :description, :budget_setting_id, :user_id])
+    |> cast(attrs, [:date, :description, :budget_setting_id, :user_id, :currency])
     |> validate_required([:date, :description, :user_id])
     |> validate_amount_v2(attrs)
   end
@@ -25,9 +26,9 @@ defmodule BudgetTracker.Transactions.Transaction do
       %{amount_v2: ""} ->
         changeset
 
-      %{amount_v2: amount} ->
+      %{amount_v2: amount, currency: currency} ->
         try do
-          put_change(changeset, :amount_v2, Money.parse!(amount, :PHP))
+          put_change(changeset, :amount_v2, Money.parse!(amount, currency))
         rescue
           _ -> add_error(changeset, :amount_v2, "invalid amount")
         end

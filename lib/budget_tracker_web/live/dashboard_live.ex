@@ -125,7 +125,7 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
         |> Transactions.list_transactions_of_user()
         |> Enum.map(&Transactions.transaction_to_map(&1, :budget_name))
         |> Enum.group_by(&Map.get(&1, :category))
-        |> transform_transactions()
+        |> transform_transactions(current_user.currency)
 
       {:ok, %{transaction_list: transactions}}
     end)
@@ -140,18 +140,18 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
         |> Transactions.list_transactions_of_user()
         |> Enum.map(&Transactions.transaction_to_map/1)
         |> Enum.group_by(&Map.get(&1, :category))
-        |> transform_transactions()
+        |> transform_transactions(current_user.currency)
 
       {:ok, %{overall_transaction_list: transactions}}
     end)
   end
 
-  defp transform_transactions(transactions) do
+  defp transform_transactions(transactions, currency \\ "PHP") do
     transactions
     |> Stream.map(fn {category, transactions} ->
       Enum.reduce(
         transactions,
-        %{category: category, amount: Money.new(0, :PHP), color: "#FFFFFF"},
+        %{category: category, amount: Money.new(0, currency), color: "#FFFFFF"},
         fn transaction, acc ->
           result = Money.add(acc.amount, transaction.amount)
           %{acc | amount: result, color: transaction.color}
