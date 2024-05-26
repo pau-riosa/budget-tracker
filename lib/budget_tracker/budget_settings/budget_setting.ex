@@ -13,6 +13,7 @@ defmodule BudgetTracker.BudgetSettings.BudgetSetting do
     belongs_to :user, BudgetTracker.Accounts.User
     has_many(:transactions, BudgetTracker.Transactions.Transaction)
 
+    field :currency, :string, virtual: true
     field :actual_amount, Money.Ecto.Amount.Type, virtual: true
     field :diff_amount, Money.Ecto.Amount.Type, virtual: true
 
@@ -27,7 +28,8 @@ defmodule BudgetTracker.BudgetSettings.BudgetSetting do
       :name,
       :user_id,
       :color,
-      :type
+      :type,
+      :currency
     ])
     |> validate_required([:category, :name, :user_id, :color])
     |> validate_planned_amount_v2(attrs)
@@ -49,9 +51,9 @@ defmodule BudgetTracker.BudgetSettings.BudgetSetting do
       %{planned_amount_v2: ""} ->
         changeset
 
-      %{planned_amount_v2: amount} ->
+      %{planned_amount_v2: amount, currency: currency} ->
         try do
-          put_change(changeset, :planned_amount_v2, Money.parse!(amount, :PHP))
+          put_change(changeset, :planned_amount_v2, Money.parse!(amount, currency))
         rescue
           _ -> add_error(changeset, :planned_amount_v2, "invalid amount")
         end

@@ -10,6 +10,20 @@ defmodule BudgetTracker.Transactions do
 
   @budget_categories Ecto.Enum.values(BudgetTracker.BudgetSettings.BudgetSetting, :category)
 
+  @spec update_currency(user :: User.t()) :: :ok
+  def update_currency(user) do
+    Transaction
+    |> from(as: :transactions)
+    |> join(:inner, [transactions: t], u in User, on: u.id == t.user_id, as: :users)
+    |> where([transactions: t], t.user_id == ^user.id)
+    |> update([transactions: t],
+      set: [
+        amount_v2: fragment("((?).amount, ?)", t.amount_v2, ^user.currency)
+      ]
+    )
+    |> Repo.update_all([])
+  end
+
   @spec transfer_amount_v1_to_amount_v2() :: :ok
   def transfer_amount_v1_to_amount_v2() do
     Transaction

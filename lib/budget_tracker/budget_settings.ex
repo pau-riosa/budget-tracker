@@ -8,6 +8,20 @@ defmodule BudgetTracker.BudgetSettings do
   alias BudgetTracker.Accounts.User
   alias BudgetTracker.BudgetSettings.BudgetSetting
 
+  @spec update_currency(user :: Uset.t()) :: :ok
+  def update_currency(user) do
+    BudgetSetting
+    |> from(as: :budget_settings)
+    |> join(:inner, [budget_settings: b], u in User, on: u.id == b.user_id, as: :users)
+    |> where([budget_settings: b], b.user_id == ^user.id)
+    |> update([budget_settings: b],
+      set: [
+        planned_amount_v2: fragment("((?).amount, ?)", b.planned_amount_v2, ^user.currency)
+      ]
+    )
+    |> Repo.update_all([])
+  end
+
   @spec transfer_amount_v1_to_amount_v2() :: :ok
   def transfer_amount_v1_to_amount_v2() do
     BudgetSetting
