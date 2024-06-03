@@ -39,7 +39,11 @@ defmodule BudgetTracker.BudgetSettings.BudgetSetting do
   defp add_random_color(changeset) do
     case changeset.data do
       %__MODULE__{color: "#000000"} ->
-        put_change(changeset, :color, RandomColor.rgba([format: :string], 0.5))
+        put_change(
+          changeset,
+          :color,
+          RandomColor.rgba([hue: :green, luminosity: :random, format: :string], 0.5)
+        )
 
       _ ->
         changeset

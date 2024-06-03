@@ -30,33 +30,34 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
         />
         <.total_value_card path={~p"/savings"} title="Total Savings" amount={@savings_total_amount} />
       </div>
-      <div class="mx-auto grid max-w-2xl items-center grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-1">
-        <.async_result :let={transactions} assign={@overall_transaction_list}>
-          <:loading>Loading Overall Transactions Analytics...</:loading>
-          <:failed>There was an error loading overall transactions analytics...</:failed>
-          <div class="w-full h-96">
-            <canvas
-              phx-hook="BarChart"
-              id="overall-transaction-list"
-              class="col-span-1"
-              data-title="Overall Transactions by Type"
-              data-items={Jason.encode!(transactions)}
-            >
-            </canvas>
-          </div>
-        </.async_result>
+      <div class="mx-auto grid max-w-2xl items-center grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-2">
         <.async_result :let={transactions} assign={@transaction_list}>
           <:loading>Loading Transactions Analytics Category...</:loading>
           <:failed>There was an error loading transactions analytics by category...</:failed>
           <div class="w-full flex items-center justify-center h-96">
             <canvas
-              phx-hook="HorizontalBarChart"
+              phx-hook="PieChart"
               id="pie-chart-overall-transaction-list"
               class="col-span-1"
               data-title="Overall Transactions by Category"
               data-items={Jason.encode!(transactions)}
             >
             </canvas>
+          </div>
+        </.async_result>
+        <.async_result :let={transactions} assign={@transaction_list}>
+          <:loading>Loading Overall Transactions Analytics...</:loading>
+          <:failed>There was an error loading overall transactions analytics...</:failed>
+          <div class="w-full grid grid-cols-1 lg:grid-cols-3 gap-5 justify-center items-center">
+            <div :for={transaction <- transactions} class="w-full flex flex-col">
+              <div class="flex flex-row items-center gap-x-1">
+                <div class="w-3 h-3 rounded-full" style={"background-color: #{transaction.color};"} />
+                <p class="text-md font-md capitalize text-zinc-500"><%= transaction.category %></p>
+              </div>
+              <div class="text-lg font-semibold capitalize ">
+                <%= Money.parse!(transaction.amount, transaction.currency) %>
+              </div>
+            </div>
           </div>
         </.async_result>
       </div>
@@ -160,6 +161,7 @@ defmodule BudgetTrackerWeb.DashboardLive.Index do
     end)
     |> Stream.map(fn transaction ->
       %{transaction | amount: Money.to_decimal(transaction.amount)}
+      |> Map.put(:currency, transaction.amount.currency)
     end)
     |> Enum.to_list()
   end

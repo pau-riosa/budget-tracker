@@ -2,6 +2,56 @@ import Chart from "chart.js/auto";
 import { transparentize, months, returnMonths } from "./utils";
 const d = new Date();
 let month_name = returnMonths()[d.getMonth()];
+
+export const PieChart = {
+  dataset() {
+    return JSON.parse(this.el.dataset.items);
+  },
+  datatitle() {
+    return this.el.dataset.title;
+  },
+  mounted() {
+    const ctx = this.el;
+    const data = {
+      type: "doughnut",
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+            position: "chartArea",
+            align: "left",
+clip: {left: 5, top: false, right: -2, bottom: 0}
+          },
+          title: {
+            display: true,
+            text: this.datatitle(),
+          },
+        },
+      },
+      data: {
+        // random data to validate chart generation
+        labels: this.dataset().map((item) => item.category.toUpperCase()),
+        datasets: [
+          {
+            data: this.dataset().map((item) => item.amount),
+            backgroundColor: this.dataset().map((item) =>
+              transparentize(item.color, 0.8),
+            ),
+            borderColor: this.dataset().map((item) =>
+              transparentize(item.color, 0),
+            ),
+            borderWidth: 2,
+            hoverOffset: 4
+          },
+        ],
+      },
+    };
+    const chart = new Chart(ctx, data);
+  },
+};
+
 export const HorizontalBarChart = {
   dataset() {
     return JSON.parse(this.el.dataset.items);
@@ -11,7 +61,6 @@ export const HorizontalBarChart = {
   },
   mounted() {
     const ctx = this.el;
-    console.log(this.dataset());
     const data = {
       type: "bar",
       options: {
